@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleveland Hopp - Cinematic Visionary</title>
+    <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico?v=2">
+    <link rel="icon" href="favicon.jpg?v=2" type="image/jpeg">
+    <link rel="apple-touch-icon" href="favicon.jpg?v=2">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #ffffff;
+            --secondary-color: #1a1a2e;
+            --accent-color: #ffffff;
+            --text-light: #ffffff;
+            --text-dark: #2c3e50;
+            --overlay-dark: rgba(0, 0, 0, 0.7);
+            --gradient-primary: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+            --gradient-secondary: linear-gradient(135deg, #ffffff 0%, #aaaaaa 100%);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s ease-out;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 107, 53, 0.3);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 15px 50px;
+            background: rgba(10, 10, 10, 0.98);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('ovf.jpg') center/cover no-repeat;
+            filter: brightness(0.4);
+            transform: scale(1);
+            transition: none;
+            animation: none;
+            opacity: 1;
+            z-index: 0;
+            will-change: auto;
+        }
+
+        .hero-background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.4);
+            transform: scale(1.1);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 3s ease-in-out;
+            z-index: 1;
+        }
+
+        .hero-background-overlay.slide-up {
+            animation: slideUpOverlay 3s ease-in-out forwards;
+        }
+
+        .hero-background-overlay.slide-left {
+            animation: slideLeftOverlay 3s ease-in-out forwards;
+        }
+
+        .hero-background-overlay.slide-right {
+            animation: slideRightOverlay 3s ease-in-out forwards;
+        }
+
+        @keyframes heroMove {
+            from {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            to {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUpOverlay {
+            0% {
+                transform: translateY(100%) scale(1.1);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideLeftOverlay {
+            0% {
+                transform: translateX(100%) scale(1.1);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0) scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideRightOverlay {
+            0% {
+                transform: translateX(-100%) scale(1.1);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0) scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        .hero:hover .hero-background {
+            transform: scale(1.05);
+        }
+
+        .hero-content {
+            position: relative;
+            text-align: center;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 20px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-transform: none;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            color: #b8b8b8;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: var(--gradient-primary);
+            color: #0a0a0a;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.4);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        .scroll-indicator i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .category-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin: 60px 0 30px 0;
+            text-align: center;
+        }
+
+        .film-category:first-child .category-title {
+            margin-top: 0;
+        }
+        .section {
+            padding: 100px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Make Films heading smaller */
+        #films .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        }
+
+        /* Gallery Section */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+            background: transparent;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: red; /* Debug: Show what's not covered */
+            width: 100%;
+            display: block;
+            min-height: 400px; /* Debug: Ensure height */
+        }
+        
+        /* Debug: More specific rule for Carissa */
+        .gallery-item[onclick*="Carissa"] {
+            background-image: url('Carissa_poster.JPG') !important;
+            background-color: red !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            width: 600px !important;  /* Wider to match poster ratio */
+            height: 311px !important; /* 600px / 1.92 = 311px */
+            max-width: 100% !important;
+        }
+        
+        /* Landscape posters (wider than tall) */
+        .gallery-item.landscape {
+            height: 300px;
+        }
+        
+        /* Square posters (nearly equal) */
+        .gallery-item.square {
+            height: 350px;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .gallery-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            background: transparent !important;
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .gallery-overlay p {
+            font-size: 14px;
+            color: #b8b8b8;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #b8b8b8;
+        }
+
+        .about-text h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            aspect-ratio: 4/5;
+            min-height: 500px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Awards Section */
+        .award-section {
+            margin-bottom: 80px;
+        }
+
+        .carissa-image-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 80px;
+            margin-bottom: 40px;
+        }
+
+        .carissa-content {
+            flex: 1;
+        }
+
+        .carissa-image-side {
+            flex: 0 0 340px;
+            margin-top: 0;
+        }
+
+        .carissa-image {
+            width: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border-radius: 4px;
+            position: relative;
+            height: 500px;
+            max-width: 400px;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .carissa-image:hover {
+            transform: scale(1.03);
+        }
+
+        .carissa-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .gallery-modal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            background: transparent;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .award-entry {
+            font-size: 13px;
+            margin-bottom: 35px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.8;
+            color: #b8b8b8;
+        }
+
+        .award-entry::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            color: #ff4444;
+        }
+
+        .award-entry a {
+            color: #ff4444;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 68, 68, 0.3);
+            transition: border-color 0.3s;
+        }
+
+        .award-entry a:hover {
+            border-color: #ff4444;
+        }
+
+        .award-content-wrapper {
+            display: flex;
+            gap: 80px;
+            align-items: flex-start;
+        }
+
+        .award-text {
+            flex: 1;
+        }
+
+        .award-images-side {
+            flex: 0 0 340px;
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+            margin-top: 0;
+            margin-left: 0;
+        }
+
+        .award-side-image {
+            flex: 1;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border-radius: 4px;
+            position: relative;
+            height: 500px;
+            max-width: 400px;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .award-side-image:hover {
+            transform: scale(1.03);
+        }
+
+        .award-side-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* Awards Responsive */
+        @media (max-width: 1200px) {
+            .carissa-image-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .carissa-image-side {
+                flex: none;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .carissa-image {
+                height: 500px;
+            }
+            
+            .award-content-wrapper {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .award-images-side {
+                flex: none;
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                gap: 0;
+                margin-top: 20px;
+                margin-left: 0;
+            }
+            
+            .award-side-image {
+                height: 375px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .award-images-side {
+                flex: 0 0 300px;
+                margin-left: 0;
+            }
+            
+            .award-side-image {
+                height: 375px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .award-content-wrapper {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .award-images-side {
+                flex: none;
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                gap: 0;
+                margin-top: 20px;
+                margin-left: 0;
+            }
+            
+            .award-side-image {
+                width: 100%;
+                max-width: 500px;
+                height: 625px;
+            }
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        /* Offerings Table Styles */
+        .offerings-table-container {
+            margin: 40px 0;
+        }
+
+        .offerings-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 40px;
+            background: transparent;
+        }
+
+        .offerings-table thead {
+            display: none; /* Hide the header since we want card-like appearance */
+        }
+
+        .offerings-table tbody tr {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .offerings-table tbody tr:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 107, 53, 0.4);
+        }
+
+        .offerings-table td {
+            padding: 40px 30px;
+            font-family: 'Montserrat', sans-serif;
+            color: #b8b8b8;
+            border: none;
+            vertical-align: middle;
+            background: transparent;
+        }
+
+        .offerings-table td:first-child {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 18px;
+            text-align: center;
+            width: 25%;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .offerings-table td:nth-child(2) {
+            font-size: 14px;
+            line-height: 1.6;
+            width: 50%;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .offerings-table td:last-child {
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            color: #ff4444;
+            width: 25%;
+        }
+
+        .offerings-table td i {
+            display: block;
+            font-size: 24px;
+            color: #ff4444;
+            margin-bottom: 15px;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .offerings-table {
+                border-spacing: 0 20px;
+            }
+            
+            .offerings-table td {
+                padding: 30px 20px;
+                display: block;
+                width: 100% !important;
+                text-align: center;
+                border: none !important;
+            }
+            
+            .offerings-table td:first-child {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .offerings-table td:nth-child(2) {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .service-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+        }
+
+        .service-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #b8b8b8;
+            line-height: 1.6;
+        }
+
+        /* Reference Cards */
+        .reference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .reference-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .reference-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .reference-card h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .reference-card p {
+            color: #b8b8b8;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .reference-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .reference-card a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            margin-top: 60px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .contact-text h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .contact-text p {
+            color: #b8b8b8;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95vw;
+            height: 95vh;
+            max-width: none;
+            max-height: none;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        .modal-content img {
+            width: auto;
+            height: auto;
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0a;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 50px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            color: #b8b8b8;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        footer p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .section {
+                padding: 60px 20px;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="scrollToTop()">cleveland hopp</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#films" class="nav-link">Films</a></li>
+                <li><a href="#awards" class="nav-link">Awards & Recognition</a></li>
+                <li><a href="#services" class="nav-link">Offerings</a></li>
+                <li><a href="#references" class="nav-link">References</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <h1>Cleveland Noble Clyde Hopp</h1>
+            <p class="subtitle">FILMMAKER</p>
+            <a href="#films" class="cta-button">EXPLORE MY WORK</a>
+            <div class="hero-social-links" style="margin-top: 30px; display: flex; gap: 20px; justify-content: center;">
+                <a href="https://www.instagram.com/clevelandnobleclydehopp/?hl=en" target="_blank" style="color: #ffffff; font-size: 20px; opacity: 0.8; transition: opacity 0.3s ease, transform 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.transform='translateY(-3px)'" onmouseout="this.style.opacity='0.8'; this.style.transform='translateY(0)'"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/clevelandhopp/" target="_blank" style="color: #ffffff; font-size: 20px; opacity: 0.8; transition: opacity 0.3s ease, transform 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.transform='translateY(-3px)'" onmouseout="this.style.opacity='0.8'; this.style.transform='translateY(0)'"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <h2 class="section-title">ABOUT THE ARTIST</h2>
+        <div class="about-content">
+            <div class="about-image fade-in">
+                <img src="Cleveland_Hopp_Bio_Picture.jpg" alt="Cleveland Hopp">
+            </div>
+            <div class="about-text fade-in">
+                <p>Cleveland Hopp (he/him) is an award-winning filmmaker and activist from South Africa whose work explores memory, land, queer identity, and intergenerational belonging in rural South Africa. His documentary <em>Onthou vi Fredo?</em> winner of Best Documentary and Best LGBTQ+ Representation at the FAME Inclusive Lens Awards, screened at Giornate degli Autori's Africa Calls programme, where he also served as a jury member for the UNIMED Film Award at the 82nd Venice Film Festival in Italy. Cleveland's practice bridges cinema and research, focusing on preserving and creating an archive for unsung queer heroes in rural South Africa. He was also part of the creative team behind <em>Carissa</em> (Jason Jacobs & Devon Delmar), a Venice Horizons Award-nominated feature, and continues to use film as a tool for healing, resistance, and renewal.</p>
+                
+                <h4 style="margin-top: 30px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 20px; color: #ffffff;">EDUCATION & QUALIFICATIONS</h4>
+                <p style="margin-top: 15px;"><strong>Bachelor of Arts Honours in Film Practice and Theory</strong><br>with distinction in Documentary Studies<br>University of Cape Town | 2024</p>
+                <p style="margin-top: 15px;"><strong>Bachelor of Arts in Film and Television Studies</strong><br>specialising in Screen Production<br>University of Cape Town | 2022</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Films Section -->
+    <section class="section" id="films">
+        <h2 class="section-title">FILMS</h2>
+        
+        <!-- Feature Films -->
+        <div class="film-category">
+            <h3 class="category-title">Feature Films</h3>
+            <div class="gallery">
+                <div class="gallery-item" onclick="openFilmModal('Carissa_poster.JPG', 'Carissa')" style="background-image: url('Carissa_poster.JPG')">
+                    <div class="gallery-overlay">
+                        <h3>Carissa</h3>
+                        <p>Feature Film - Production Designer</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openFilmModal('VENUS_poster.jpg', 'Venus')">
+                    <img src="VENUS_poster.jpg" alt="Venus">
+                    <div class="gallery-overlay">
+                        <h3>Venus</h3>
+                        <p>Feature Film - Director</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openFilmModal('Variations_On_A_Theme_Behind_The_Scenes.PNG', 'Variations on a Theme')">
+                    <img src="Variations_On_A_Theme_Behind_The_Scenes.PNG" alt="Variations on a Theme">
+                    <div class="gallery-overlay">
+                        <h3>Variations on a Theme</h3>
+                        <p>Feature Film - Production Manager & Designer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Short Films -->
+        <div class="film-category">
+            <h3 class="category-title">Short Films</h3>
+            <div class="gallery">
+                <div class="gallery-item" onclick="openFilmModal('Onthou vi Fredo_Thumbnail_Poster.jpg', 'Onthou vi Fredo?')">
+                    <img src="Onthou vi Fredo_Thumbnail_Poster.jpg" alt="Onthou vi Fredo?">
+                    <div class="gallery-overlay">
+                        <h3>Onthou vi Fredo?</h3>
+                        <p>Short Film - Writer, Director & Co-Producer</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openFilmModal('We_Cant_See_The_Sunset.JPG', 'WeCantSeeTheSunset')">
+                    <img src="We_Cant_See_The_Sunset.JPG" alt="We Can't See The Sunset">
+                    <div class="gallery-overlay">
+                        <h3>We Can't See The Sunset</h3>
+                        <p>Short Film - Writer, Co-director & Co-producer</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openFilmModal('Melkbrood-2.jpeg', 'Melkbrood')">
+                    <img src="Melkbrood-2.jpeg" alt="Melkbrood">
+                    <div class="gallery-overlay">
+                        <h3>Melkbrood</h3>
+                        <p>Short Film - Production Designer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards & Recognition Section -->
+    <section class="section" id="awards">
+        <h2 class="section-title">AWARDS & RECOGNITION</h2>
+
+        <!-- ONTHOU VI FREDO? Section -->
+        <div class="award-section">
+            <div class="award-content-wrapper">
+                <!-- ONTHOU VI FREDO? Images -->
+                <div class="award-images-side">
+                    <div class="award-side-image" onclick="openModal('award1c')">
+                        <img id="award1c" src="Fredo_Award.jpg" alt="ONTHOU VI FREDO? Award Image">
+                    </div>
+                </div>
+                
+                <div class="award-text">
+                    <h3>ONTHOU VI FREDO?</h3>
+                  
+                    <div class="award-entry" style="margin-top: 20px;"><a href="https://www.dglff.org.za/films.html" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Durban Gay and Lesbian Film Festival 2024</a></div>
+                    <div class="award-entry"><a href="https://10and5.com/fame-shorts-is-back-here-are-the-films-you-dont-want-to-miss/" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Fame Shorts Film Festival 2025</a></div>
+                    <div class="award-entry"><a href="https://whatkeptmeup.com/nigerian-film-news/winners-at-the-inclusive-lens-awards-at-2025-fame-week-africa/" target="_blank" style="color: #ff4444; text-decoration: underline;">Winner - Best Representation of LGBTQ+ Community, Fame Week Africa Inclusive Lens 2025</a></div>
+                    <div class="award-entry"><a href="https://cbn.co.za/industry-news/expos-events-news/fame-shorts-film-festival-announces-2025-award-winners/" target="_blank" style="color: #ff4444; text-decoration: underline;">Winner - Best Documentary, Fame Shorts Film Festival 2025</a></div>
+                    <div class="award-entry"><a href="https://encounters.co.za/encounters-newsletter-september-2025/" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Encounters International Documentary Film Festival 2025</a></div>
+                    <div class="award-entry"><a href="https://www.giornatedegliautori.com/en/program/africa-calls-eng/" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Giornate degli Autori, Venice International Film Festival 2025</a></div>
+                    <div class="award-entry"><a href="https://www.humanrightsfestival.co.za/human-rights-festival-2025/remember-fredo/index.html" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Human Rights Film Festival 2024</a></div>
+                    <div class="award-entry">Official Selection - Joburg Film Festival 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARISSA Section with image -->
+        <div class="award-section">
+            <div class="carissa-image-container">
+                <!-- Carissa image -->
+                <div class="carissa-image-side">
+                    <div class="carissa-image" onclick="openModal('carissaImage')">
+                        <img id="carissaImage" src="Carissa poster 290724.jpg" alt="CARISSA Award Image">
+                    </div>
+                </div>
+                
+                <div class="carissa-content">
+                    <h3>CARISSA</h3>
+                    <div class="award-entry" style="margin-top: 20px;"><a href="https://variety.com/2024/film/reviews/carissa-review-1236151970/" target="_blank" style="color: #ff4444; text-decoration: underline;">Featured Article - Variety 2024</a></div>
+                    <div class="award-entry"><a href="https://www.labiennale.org/en/cinema/2024/orizzonti/carissa" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Venice International Film Festival 2024 (Nominee for Venice Horizons Award)</a></div>
+                    <div class="award-entry"><a href="https://www.instagram.com/reel/DFEDLlrJGqx/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA%3D%3D" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Santa Barbara International Film Festival 2025</a></div>
+                    <div class="award-entry"><a href="https://www.blackstarfest.org/festival/events/carissa/" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Blackstar International Film Festival</a></div>
+                    <div class="award-entry"><a href="https://silwerskermfees.co.za/digital%20films/feature-film-carissa/" target="_blank" style="color: #ff4444; text-decoration: underline;">Official Selection - Silwerskermfees 2025</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offerings Section -->
+    <section class="section" id="services">
+        <h2 class="section-title">PROFESSIONAL OFFERINGS</h2>
+        <div class="offerings-table-container">
+            <table class="offerings-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Description</th>
+                        <th>Experience</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-film"></i> Production Design</td>
+                        <td>Creating immersive visual environments that bring stories to life through meticulous attention to detail and artistic vision.</td>
+                        <td><strong>More than 5 years experience</strong></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-video"></i> Directing</td>
+                        <td>Transforming scripts into compelling visual narratives with a distinctive directorial voice and creative storytelling approach.</td>
+                        <td><strong>More than 2 years experience</strong></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-camera"></i> Content Production</td>
+                        <td>Developing and producing high-quality content across various media platforms with professional expertise and creative innovation.</td>
+                        <td><strong>More than 5 years experience</strong></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-tasks"></i> Production Management</td>
+                        <td>Overseeing all aspects of production to ensure seamless execution from concept to completion with professional project management.</td>
+                        <td><strong>More than 3 years experience</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- References Section -->
+    <section class="section" id="references">
+        <h2 class="section-title">REFERENCES</h2>
+        <div class="offerings-table-container">
+            <table class="offerings-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role & Project</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Devon Delmar</td>
+                        <td>Director - CARISSA</td>
+                        <td><a href="mailto:devondelmar@gmail.com" style="color: #ff4444; text-decoration: underline;">devondelmar@gmail.com</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Jason Jacobs</td>
+                        <td>Director - DIE AGTERRYER SE DOGTER</td>
+                        <td><a href="mailto:hello@jasonjacobs.art" style="color: #ff4444; text-decoration: underline;">hello@jasonjacobs.art</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Julia Cain</td>
+                        <td>Executive Producer - ONTHOU VI FREDO?</td>
+                        <td><a href="mailto:Julia.cain@uct.ac.za" style="color: #ff4444; text-decoration: underline;">Julia.cain@uct.ac.za</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Ruweida Valla</td>
+                        <td>Director - HECTIC NINE-9</td>
+                        <td><a href="mailto:rvalla@trace.tv" style="color: #ff4444; text-decoration: underline;">rvalla@trace.tv</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Sarah Byram</td>
+                        <td>Director - BETTERHALF Fashion Campaigns</td>
+                        <td><a href="mailto:sarahbyram@gmail.com" style="color: #ff4444; text-decoration: underline;">sarahbyram@gmail.com</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Deidre Jantjies</td>
+                        <td>Producer/Director - MELKBROOD & VENUS</td>
+                        <td><a href="mailto:info@diegeesindiemasjien.co.za" style="color: #ff4444; text-decoration: underline;">info@diegeesindiemasjien.co.za</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Mamello Mosiana</td>
+                        <td>Producer - OPEN SECRETS</td>
+                        <td><a href="mailto:mmosiana@opensecrets.org.za" style="color: #ff4444; text-decoration: underline;">mmosiana@opensecrets.org.za</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Annemarie Du Plessis</td>
+                        <td>Producer - UPROOTED & VARIATIONS ON A THEME</td>
+                        <td><a href="mailto:Annemarie@meria.co.za" style="color: #ff4444; text-decoration: underline;">Annemarie@meria.co.za</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Dr Ian-Malcolm Rijsdijk</td>
+                        <td>Course Convenor - Film and Television Studies, UCT</td>
+                        <td><a href="mailto:ian.rijsdijk@uct.ac.za" style="color: #ff4444; text-decoration: underline;">ian.rijsdijk@uct.ac.za</a></td>
+                    </tr>
+                    <tr class="fade-in">
+                        <td><i class="fas fa-user"></i> Dr Zamambo Mkhize</td>
+                        <td>Course Convenor - African Feminist Studies, UCT</td>
+                        <td><a href="mailto:zamambo.mkhize@uct.ac.za" style="color: #ff4444; text-decoration: underline;">zamambo.mkhize@uct.ac.za</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Trailer Modal -->
+    <div id="trailerModal" class="modal" style="display: none;">
+        <span class="close-modal" onclick="closeTrailerModal()">&times;</span>
+        <div class="modal-content" style="background: #000; max-width: 900px; width: 90%; aspect-ratio: 16/9;">
+            <div id="trailerContainer" style="position: relative; width: 100%; height: 100%;">
+                <!-- YouTube iframe will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://www.instagram.com/clevelandnobleclydehopp/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/clevelandhopp/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p>&copy; 2025 Cleveland Hopp. All rights reserved. Created by <a href="https://www.linkedin.com/in/wadevanzyl/?originalSubdomain=za" target="_blank" style="color: #ff4444; text-decoration: none;">Wade van Zyl</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Loading screen
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Cycling background images
+        const heroBackgroundImages = [
+            'ovf.jpg',
+            'Carissa_BTSjpg.jpg', 
+            'BTS.JPG'
+        ];
+        
+        const slideAnimations = ['slide-up', 'slide-left', 'slide-right'];
+        let currentBgIndex = 0;
+        let currentAnimIndex = 0;
+        
+        function cycleBackground() {
+            const heroSection = document.querySelector('.hero');
+            if (!heroSection) return;
+            
+            // Change to next image
+            currentBgIndex = (currentBgIndex + 1) % heroBackgroundImages.length;
+            const nextImage = heroBackgroundImages[currentBgIndex];
+            
+            // Change to next animation
+            currentAnimIndex = (currentAnimIndex + 1) % slideAnimations.length;
+            const nextAnimation = slideAnimations[currentAnimIndex];
+            
+            // Create new overlay with next image, starting fully transparent
+            const overlay = document.createElement('div');
+            overlay.className = 'hero-background-overlay';
+            overlay.style.backgroundImage = `url('${nextImage}')`;
+            overlay.style.opacity = '0';
+            
+            // Add to hero section
+            heroSection.appendChild(overlay);
+            
+            // Force reflow to ensure opacity is applied
+            overlay.offsetHeight;
+            
+            // Start animation immediately (image slides in from off-screen)
+            setTimeout(() => {
+                overlay.classList.add(nextAnimation);
+            }, 10);
+            
+            // Fade in the image as it transitions (appears during slide)
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+            }, 500); // Start appearing as slide begins
+            
+            // After animation completes, remove old overlays but keep current one
+            setTimeout(() => {
+                // Remove any old overlays first
+                const oldOverlays = heroSection.querySelectorAll('.hero-background-overlay');
+                oldOverlays.forEach(oldOverlay => {
+                    if (oldOverlay !== overlay) {
+                        oldOverlay.remove();
+                    }
+                });
+                // Don't fade out current overlay - keep it visible
+            }, 3000);
+            
+            console.log('Background changed to:', nextImage, 'with animation:', nextAnimation);
+        }
+        
+        // Start cycling every 10 seconds, but wait for page to fully load first
+        setTimeout(() => {
+            setInterval(cycleBackground, 10000);
+        }, 2000); // Wait 2 seconds before starting cycle
+
+        // Award image fullscreen functionality
+        function makeImageFullscreen(imageElement) {
+            if (imageElement.requestFullscreen) {
+                imageElement.requestFullscreen();
+            } else if (imageElement.webkitRequestFullscreen) { /* Safari */
+                imageElement.webkitRequestFullscreen();
+            } else if (imageElement.msRequestFullscreen) { /* IE11 */
+                imageElement.msRequestFullscreen();
+            }
+        }
+
+        function setupFullscreenImages() {
+            const awardImages = document.querySelectorAll('.award-side-image img');
+            const galleryImages = document.querySelectorAll('.gallery-item img');
+            
+            // Setup award images
+            awardImages.forEach(img => {
+                let clickCount = 0;
+                let clickTimer = null;
+                
+                // Single click - fullscreen
+                img.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    clickCount++;
+                    if (clickCount === 1) {
+                        clickTimer = setTimeout(function() {
+                            // Single click - go fullscreen
+                            makeImageFullscreen(img.parentElement);
+                            clickCount = 0;
+                        }, 250);
+                    } else if (clickCount === 2) {
+                        // Double click - exit fullscreen
+                        clearTimeout(clickTimer);
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.webkitExitFullscreen) { /* Safari */
+                            document.webkitExitFullscreen();
+                        } else if (document.msExitFullscreen) { /* IE11 */
+                            document.msExitFullscreen();
+                        }
+                        clickCount = 0;
+                    }
+                });
+                
+                // Add cursor pointer to indicate clickable
+                img.style.cursor = 'pointer';
+                img.parentElement.style.cursor = 'pointer';
+            });
+            
+            // Setup gallery images
+            galleryImages.forEach(img => {
+                let clickCount = 0;
+                let clickTimer = null;
+                
+                // Single click - fullscreen
+                img.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    clickCount++;
+                    if (clickCount === 1) {
+                        clickTimer = setTimeout(function() {
+                            // Single click - go fullscreen
+                            makeImageFullscreen(img.parentElement);
+                            clickCount = 0;
+                        }, 250);
+                    } else if (clickCount === 2) {
+                        // Double click - exit fullscreen
+                        clearTimeout(clickTimer);
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.webkitExitFullscreen) { /* Safari */
+                            document.webkitExitFullscreen();
+                        } else if (document.msExitFullscreen) { /* IE11 */
+                            document.msExitFullscreen();
+                        }
+                        clickCount = 0;
+                    }
+                });
+                
+                // Add cursor pointer to indicate clickable
+                img.style.cursor = 'pointer';
+                img.parentElement.style.cursor = 'pointer';
+            });
+        }
+
+        // Initialize fullscreen functionality when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFullscreenImages();
+        });
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80; // Account for fixed navigation height
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Active navigation link
+        window.addEventListener('scroll', function() {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Modal functionality for films
+        function openFilmModal(imageSrc, title, description) {
+            console.log('=== OPENING FILM MODAL ===');
+            console.log('Title:', title);
+            console.log('Image:', imageSrc);
+            
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            // FRESH START - Set modal to visible state
+            modal.style.display = 'block';
+            modalImg.style.display = 'block';
+            modalImg.src = imageSrc;
+            modalImg.alt = title;
+            document.body.style.overflow = 'hidden';
+            
+            console.log('Modal set to visible with image');
+            console.log('Image src set to:', modalImg.src);
+            
+            // REMOVE ALL EXISTING DESCRIPTIONS AND GALLERY ELEMENTS
+            const existingDescription = modalContent.querySelector('.film-description');
+            if (existingDescription) {
+                existingDescription.remove();
+                console.log('Removed existing description');
+            }
+            
+            // Also remove any gallery elements that might be left
+            const galleryElements = modal.querySelectorAll('.gallery-container, .gallery-header, .images-container, .gallery-image-item');
+            galleryElements.forEach(el => el.remove());
+            console.log('Cleared any remaining gallery elements');
+            
+            // Film details data
+            const filmDetails = {
+                'Carissa': {
+                    year: '2025',
+                    directors: 'Jason Jacobs & Devon Delmar',
+                    synopsis: 'A young woman in a South African village who, pressured by her grandmother, must choose between a city job opportunity and taking over her grandfather\'s rooibos tea farm, which is threatened by development, forcing her to confront her heritage and identity.',
+                    roles: 'Production Designer & Marketing Coordinator',
+                    type: 'Feature Film',
+                    trailer: 'https://www.youtube.com/watch?v=KcHgAVKLaaM',
+                    additionalImages: ['Carissa_10.3.2.jpg', 'Carrissa_Ad1.jpg', 'Carissa_Additional_1.jpg']
+                },
+                'Venus': {
+                    year: '2025',
+                    directors: 'Deidré Jantjies',
+                    synopsis: 'A story about a young woman who receives a calling from her indigenous ancestor to right the wrongs of the past.',
+                    roles: 'Production Designer',
+                    type: 'Feature Film',
+                    additionalImages: ['VENUS_poster.jpg', 'VENUS_1.jpg', 'VENUS_2.jpg']
+                },
+                'Variations on a Theme': {
+                    year: '2026',
+                    directors: 'Jason Jacobs & Devon Delmar',
+                    synopsis: 'An elderly goat herder in South Africa\'s remote Kamiesberge falls victim to a scam promising reparations for her father\'s unpaid WWII service, while her 80th birthday celebration threatens her cherished independence.',
+                    roles: 'Production Manager, Production Designer & Marketing Coordinator',
+                    type: 'Feature Film',
+                    additionalImages: ['Variations_On_A_Theme_Behind_The_Scenes.PNG', 'Variations_On_A_Theme_Ad1.jpg', 'Variations_On_A_Theme_Ad2.jpg']
+                },
+                'Onthou vi Fredo?': {
+                    year: '2024',
+                    directors: 'Cleveland Hopp',
+                    synopsis: 'A mother\'s quest for justice and remembrance for her child, Alfredo, serves as a poignant exploration of loss and the enduring power of community memory in Cape Town.',
+                    roles: 'Writer, Director & Co-Producer',
+                    type: 'Short Film',
+                    trailer: 'https://www.youtube.com/watch?v=IYEklMobZ5Q',
+                    additionalImages: ['Onthou vi Fredo_Thumbnail_Poster.jpg', 'frame_13721.jpg', 'Auntie Sophia.jpg']
+                },
+                'Melkbrood': {
+                    year: '2024',
+                    directors: 'Winford Collings',
+                    synopsis: 'Against the backdrop of the Karoo landscape, a daughter\'s attempt to confront her mother through a hidden letter is repeatedly derailed by her mother\'s stubborn domestic routines and avoidance.',
+                    roles: 'Production Designer',
+                    type: 'Short Film',
+                    additionalImages: ['Melkbrood-2.jpeg', 'Melkbrood.png', 'Melkbrood_Ad1.jpg']
+                },
+                'WeCantSeeTheSunset': {
+                    displayTitle: 'We Can\'t See The Sunset',
+                    year: '2024',
+                    directors: 'Cleveland Hopp & Nolwazi Nene',
+                    synopsis: 'Through the powerful testimonies of communities impacted by coal mining, a haunting journey unfolds to expose the devastating human and environmental costs of energy profiteering in South Africa.',
+                    roles: 'Writer, co-director, co-producer, Marketing Coordinator',
+                    type: 'Short Film',
+                    trailer: 'https://www.youtube.com/watch?v=7KmEbKRsKEU',
+                    additionalImages: ['We_Cant_See_The_Sunset.JPG', 'We_Cant_See_The_Sunset_Ad2.png', 'We_Cant_See_The_Sunset_Ad1.png']
+                }
+            };
+            
+            const details = filmDetails[title];
+            console.log('Looking for film title:', title);
+            console.log('Available film titles:', Object.keys(filmDetails));
+            console.log('Film details found:', !!details);
+            
+            // Use displayTitle if available, otherwise use the key
+            const displayTitle = details.displayTitle || title;
+            
+            if (details) {
+                // ALWAYS create fresh description div
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.className = 'film-description';
+                descriptionDiv.style.cssText = 'padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5)); color: white; position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; max-height: 40%; overflow-y: auto; transition: opacity 0.5s ease;';
+                
+                // Build gallery link if images exist
+                let additionalImagesHtml = '';
+                if (details.additionalImages && details.additionalImages.length > 0) {
+                    console.log('Creating gallery link for', title, 'with', details.additionalImages.length, 'images');
+                    additionalImagesHtml = '<div style="margin-top: 20px;"><h4 style="font-family: Montserrat, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 15px; color: #ffffff;"><span style="cursor: pointer; text-decoration: underline; color: #ff4444;" onclick="openGalleryModal(\'' + title + '\', [\'' + details.additionalImages.join("','") + '\'])">View Gallery</span></h4></div>';
+                } else {
+                    console.log('No additional images for', title);
+                }
+                
+                // Add trailer button if trailer exists
+                let trailerHtml = '';
+                if (details.trailer) {
+                    console.log('Creating trailer button for', title);
+                    trailerHtml = '<div style="margin-top: 20px;"><h4 style="font-family: Montserrat, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 15px; color: #ffffff;"><span style="cursor: pointer; text-decoration: underline; color: #ff4444;" onclick="window.open(\'' + details.trailer + '\', \'_blank\')">View Trailer</span></h4></div>';
+                } else {
+                    console.log('No trailer for', title);
+                }
+                
+                // Set description content
+                descriptionDiv.innerHTML = `
+                    <h3 style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #ffffff;">${title}</h3>
+                    <p style="font-size: 14px; margin-bottom: 5px; color: #cccccc;"><strong>${details.type}</strong> (${details.year})</p>
+                    <p style="font-size: 13px; margin-bottom: 5px; color: #cccccc;"><strong>Directors:</strong> ${details.directors}</p>
+                    <p style="font-size: 13px; margin-bottom: 8px; line-height: 1.4; color: #ffffff;">${details.synopsis}</p>
+                    <p style="font-size: 13px; margin-bottom: 5px; color: #cccccc;"><strong>Roles:</strong> ${details.roles}</p>
+                    ${additionalImagesHtml}
+                    ${trailerHtml}
+                `;
+                
+                // Add to modal
+                modalContent.appendChild(descriptionDiv);
+                console.log('Film description added successfully');
+                console.log('Gallery link created:', !!additionalImagesHtml);
+                console.log('Modal content children now:', modalContent.children.length);
+                
+                // Text hide/show functionality
+                modalImg.addEventListener('click', function() {
+                    descriptionDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        descriptionDiv.style.display = 'none';
+                    }, 500);
+                });
+                
+                modal.addEventListener('mousemove', showTextOverlay);
+                modal.addEventListener('touchstart', showTextOverlay);
+                
+                function showTextOverlay() {
+                    if (descriptionDiv.style.display === 'none') {
+                        descriptionDiv.style.display = 'block';
+                        setTimeout(() => {
+                            descriptionDiv.style.opacity = '1';
+                        }, 50);
+                    }
+                }
+                
+                console.log('Film modal setup complete - ready for user interaction');
+                
+            } else {
+                console.log('ERROR: No film details found for', title);
+            }
+        }
+
+        // Gallery modal for viewing all additional images
+        function openGalleryModal(filmTitle, imageSet) {
+            console.log('=== GALLERY MODAL DEBUG ===');
+            console.log('Film title:', filmTitle);
+            console.log('Image set:', imageSet);
+            console.log('Image set length:', imageSet.length);
+            
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            // Check if modalImg exists
+            if (!modalImg) {
+                console.error('ERROR: modalImage element not found!');
+                return;
+            }
+            
+            modal.style.display = 'block';
+            modalImg.style.display = 'none'; // Hide the main image but don't remove it
+            document.body.style.overflow = 'hidden';
+            
+            // Clear modal content but preserve the image
+            const modalContent = modal.querySelector('.modal-content');
+            if (!modalContent) {
+                console.error('ERROR: modalContent not found!');
+                return;
+            }
+            
+            // COMPLETELY CLEAR modal content first to prevent duplication
+            modalContent.innerHTML = '';
+            
+            // Re-add the image element that was cleared
+            modalContent.appendChild(modalImg);
+            
+            console.log('Creating gallery view...');
+            
+            // Create gallery container
+            const galleryContainer = document.createElement('div');
+            galleryContainer.className = 'gallery-container';
+            galleryContainer.style.cssText = `
+                width: 100%;
+                height: 100%;
+                background: #000;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 80px 20px 20px 20px;
+                overflow-y: auto;
+            `;
+            
+            // Gallery header
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'gallery-header';
+            headerDiv.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 20px;
+                background: rgba(0,0,0,0.9);
+                backdrop-filter: blur(10px);
+                text-align: center;
+                z-index: 1001;
+            `;
+            headerDiv.innerHTML = `
+                <h2 style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 600; color: #ffffff; margin-bottom: 10px;">${filmTitle} Gallery</h2>
+            `;
+            
+            // Images container
+            const imagesContainer = document.createElement('div');
+            imagesContainer.className = 'images-container';
+            imagesContainer.style.cssText = `
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+                max-width: 90vw;
+                max-height: 80vh;
+                overflow-y: auto;
+                padding: 20px;
+            `;
+            
+            console.log('Adding images to gallery...');
+            
+            // Add images to gallery
+            imageSet.forEach((img, index) => {
+                console.log(`Adding image ${index + 1}: ${img}`);
+                
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'gallery-image-item';
+                imgContainer.style.cssText = `
+                    position: relative;
+                    cursor: pointer;
+                    transition: transform 0.3s ease;
+                    border: 3px solid rgba(255, 255, 255, 0.8);
+                    border-radius: 10px;
+                    overflow: hidden;
+                    background: transparent;
+                    width: 400px;
+                    height: 300px;
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+                `;
+                
+                const imgElement = document.createElement('img');
+                imgElement.src = img;
+                imgElement.alt = `${filmTitle} - Image ${index + 1}`;
+                imgElement.style.cssText = `
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.3s ease, filter 0.3s ease;
+                    display: block;
+                    filter: grayscale(100%);
+                `;
+                
+                imgContainer.appendChild(imgElement);
+                
+                // Add hover effect
+                imgContainer.addEventListener('mouseenter', () => {
+                    imgContainer.style.transform = 'scale(1.02)';
+                    imgElement.style.transform = 'scale(1.02)';
+                    imgElement.style.filter = 'none'; // Remove grayscale - show full color
+                });
+                
+                imgContainer.addEventListener('mouseleave', () => {
+                    imgContainer.style.transform = 'scale(1)';
+                    imgElement.style.transform = 'scale(1)';
+                    imgElement.style.filter = 'grayscale(100%)'; // Restore grayscale
+                });
+                
+                // Click to view full screen
+                imgContainer.addEventListener('click', () => {
+                    console.log(`Clicked image ${index + 1}: ${img}`);
+                    openFullScreenModal(img, imageSet, index);
+                });
+                
+                imagesContainer.appendChild(imgContainer);
+            });
+            
+            console.log('Appending elements to modal...');
+            
+            // Add elements to modal in correct order
+            galleryContainer.appendChild(imagesContainer);
+            modalContent.appendChild(galleryContainer);
+            modal.appendChild(headerDiv);
+            
+            console.log('Gallery modal setup complete');
+            console.log('Modal content children:', modalContent.children.length);
+            console.log('Modal children:', modal.children.length);
+            console.log('Gallery ready - Close Gallery button will completely reset the modal');
+        }
+        
+        // Full screen modal for images with navigation
+        let currentImageIndex = 0;
+        let currentImageSet = [];
+        
+        function openFullScreenModal(imageSrc, imageSet = [], startIndex = 0) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = imageSrc;
+            modalImg.alt = 'Full screen image';
+            
+            // Show image in full pixel size
+            modalImg.style.cssText = `
+                display: block;
+                max-width: 95vw;
+                max-height: 95vh;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+                cursor: pointer;
+            `;
+            
+            document.body.style.overflow = 'hidden';
+            
+            // Store current image set for navigation
+            currentImageSet = imageSet;
+            currentImageIndex = startIndex;
+            
+            // Remove any existing film description
+            const modalContent = modal.querySelector('.modal-content');
+            const existingDescription = modalContent.querySelector('.film-description');
+            if (existingDescription) {
+                existingDescription.remove();
+            }
+            
+            // Remove existing gallery
+            const existingGallery = modalContent.querySelector('.gallery-view');
+            if (existingGallery) {
+                existingGallery.remove();
+            }
+            
+            // Remove any existing gallery containers
+            const galleryContainers = modal.querySelectorAll('.gallery-container, .gallery-header, .images-container, .gallery-image-item');
+            galleryContainers.forEach(el => el.remove());
+            
+            // Add navigation controls if there are multiple images
+            if (imageSet && imageSet.length > 1) {
+                addNavigationControls(modal);
+            }
+            
+            // Add double-click event to return to gallery
+            let lastClickTime = 0;
+            modalImg.addEventListener('click', function(e) {
+                const currentTime = new Date().getTime();
+                const timeDiff = currentTime - lastClickTime;
+                
+                if (timeDiff < 300) { // Double click detected (300ms threshold)
+                    e.preventDefault();
+                    console.log('Double-click detected - returning to gallery');
+                    openGalleryModal('Venus', imageSet); // Return to gallery
+                } else {
+                    lastClickTime = currentTime;
+                }
+            });
+        }
+        
+        function addNavigationControls(modal) {
+            // Remove existing controls
+            const existingNav = modal.querySelector('.image-navigation');
+            if (existingNav) {
+                existingNav.remove();
+            }
+            
+            // Create navigation controls
+            const navDiv = document.createElement('div');
+            navDiv.className = 'image-navigation';
+            navDiv.style.cssText = `
+                position: absolute;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                gap: 15px;
+                z-index: 1001;
+                background: rgba(0,0,0,0.7);
+                padding: 10px 20px;
+                border-radius: 25px;
+                backdrop-filter: blur(10px);
+            `;
+            
+            navDiv.innerHTML = `
+                <button onclick="navigateImage(-1)" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 14px;">← Previous</button>
+                <span style="color: white; font-size: 14px; padding: 8px 15px;">${currentImageIndex + 1} / ${currentImageSet.length}</span>
+                <button onclick="navigateImage(1)" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 14px;">Next →</button>
+            `;
+            
+            modal.appendChild(navDiv);
+        }
+        
+        function navigateImage(direction) {
+            if (currentImageSet.length === 0) return;
+            
+            currentImageIndex += direction;
+            
+            // Wrap around for circular navigation
+            if (currentImageIndex < 0) {
+                currentImageIndex = currentImageSet.length - 1;
+            } else if (currentImageIndex >= currentImageSet.length) {
+                currentImageIndex = 0;
+            }
+            
+            const modalImg = document.getElementById('modalImage');
+            modalImg.src = currentImageSet[currentImageIndex];
+            
+            // Update navigation display
+            const navDiv = document.querySelector('.image-navigation');
+            if (navDiv) {
+                const span = navDiv.querySelector('span');
+                span.textContent = `${currentImageIndex + 1} / ${currentImageSet.length}`;
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('imageModal');
+            if (modal.style.display === 'block' && currentImageSet.length > 0) {
+                if (e.key === 'ArrowLeft') {
+                    navigateImage(-1);
+                } else if (e.key === 'ArrowRight') {
+                    navigateImage(1);
+                }
+            }
+        });
+
+        // Original modal functionality for images
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = imageSrc;
+            document.body.style.overflow = 'hidden';
+            
+            // Remove any existing film description
+            const modalContent = modal.querySelector('.modal-content');
+            const existingDescription = modalContent.querySelector('.film-description');
+            if (existingDescription) {
+                existingDescription.remove();
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            console.log('=== COMPLETE MODAL RESET ===');
+            
+            // COMPLETE RESET - Hide modal completely
+            modal.style.display = 'none';
+            
+            // Reset image to clean state
+            modalImg.style.display = 'block';
+            modalImg.src = '';
+            modalImg.alt = '';
+            
+            // Reset image styling to original
+            modalImg.style.cssText = '';
+            
+            // Reset body scroll
+            document.body.style.overflow = 'auto';
+            
+            // COMPLETELY CLEAN modal content - remove everything except the image
+            const allChildren = modalContent.children;
+            const elementsToRemove = [];
+            
+            for (let i = 0; i < allChildren.length; i++) {
+                const child = allChildren[i];
+                if (child.tagName !== 'IMG') {
+                    elementsToRemove.push(child);
+                }
+            }
+            
+            elementsToRemove.forEach(el => el.remove());
+            
+            // Remove navigation controls
+            const navigationControls = modal.querySelectorAll('.image-navigation');
+            navigationControls.forEach(el => el.remove());
+            
+            // Also remove any gallery elements from the main modal
+            const galleryElements = modal.querySelectorAll('.gallery-container, .gallery-header, .images-container, .gallery-image-item');
+            galleryElements.forEach(el => el.remove());
+            
+            // Clear global state
+            currentImageIndex = 0;
+            currentImageSet = [];
+            
+            // Clear timers
+            if (window.textHideTimer) {
+                clearTimeout(window.textHideTimer);
+                window.textHideTimer = null;
+            }
+            
+            console.log('Modal completely reset - only image element remains');
+            console.log('Modal children:', modal.children.length);
+            console.log('Modal content children:', modalContent.children.length);
+        }
+
+        function playTrailer(trailerUrl) {
+            console.log('=== PLAYING TRAILER ===');
+            console.log('Trailer URL:', trailerUrl);
+            
+            // Check if it's a YouTube URL or local file
+            if (trailerUrl.includes('youtube.com') || trailerUrl.includes('youtu.be')) {
+                // Handle YouTube videos
+                const videoId = trailerUrl.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
+                if (!videoId || !videoId[1]) {
+                    console.error('Invalid YouTube URL:', trailerUrl);
+                    return;
+                }
+                
+                const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId[1]}?enablejsapi=1`;
+                console.log('YouTube Embed URL:', embedUrl);
+                
+                // Create iframe
+                const iframe = document.createElement('iframe');
+                iframe.src = embedUrl;
+                iframe.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    background: #000;
+                `;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', 'true');
+                iframe.setAttribute('frameborder', '0');
+                
+                // Clear trailer container and add iframe
+                const trailerContainer = document.getElementById('trailerContainer');
+                trailerContainer.innerHTML = '';
+                trailerContainer.appendChild(iframe);
+                
+            } else {
+                // Handle local video files
+                console.log('Loading local video:', trailerUrl);
+                
+                // Create video element
+                const video = document.createElement('video');
+                video.src = trailerUrl;
+                video.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    background: #000;
+                `;
+                video.controls = true;
+                video.autoplay = false;
+                video.muted = false;
+                
+                // Add error handling for local file restrictions
+                video.onerror = function() {
+                    console.log('Local video blocked by browser, creating download link');
+                    // Create a fallback message with download link
+                    trailerContainer.innerHTML = `
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; color: white; text-align: center; padding: 20px;">
+                            <h3 style="margin-bottom: 20px; font-family: 'Montserrat', sans-serif;">Video Player</h3>
+                            <p style="margin-bottom: 20px; font-size: 14px;">Browser security prevents direct video playback from local files.</p>
+                            <a href="${trailerUrl}" download style="background: #ff4444; color: white; text-decoration: none; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; display: inline-block;" onmouseover="this.style.background='#ff6666'" onmouseout="this.style.background='#ff4444'">Download & Open Video</a>
+                            <p style="margin-top: 15px; font-size: 12px; color: #ccc;">Click to download, then open with your video player</p>
+                        </div>
+                    `;
+                };
+                
+                // Clear trailer container and add video
+                const trailerContainer = document.getElementById('trailerContainer');
+                trailerContainer.innerHTML = '';
+                trailerContainer.appendChild(video);
+                
+                console.log('Local video element created');
+            }
+            
+            // Show trailer modal
+            const trailerModal = document.getElementById('trailerModal');
+            trailerModal.style.display = 'flex';
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+            
+            console.log('Trailer modal opened');
+        }
+
+        function closeTrailerModal() {
+            console.log('=== CLOSING TRAILER MODAL ===');
+            
+            const trailerModal = document.getElementById('trailerModal');
+            const trailerContainer = document.getElementById('trailerContainer');
+            
+            // Hide trailer modal
+            trailerModal.style.display = 'none';
+            
+            // Clear iframe to stop video
+            trailerContainer.innerHTML = '';
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+            
+            console.log('Trailer modal closed');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Parallax effect for hero background
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const heroBackground = document.querySelector('.hero-background');
+            if (heroBackground) {
+                heroBackground.style.transform = `translateY(${scrolled * 0.5}px) scale(1.1)`;
+            }
+        });
+    </script>
+    
+    <script>
+        // Smart aspect ratio detection for film thumbnails
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item img');
+            
+            galleryItems.forEach(function(img) {
+                // Create temporary image to get natural dimensions
+                const tempImg = new Image();
+                tempImg.onload = function() {
+                    const aspectRatio = this.naturalWidth / this.naturalHeight;
+                    const galleryItem = img.closest('.gallery-item');
+                    
+                    if (aspectRatio < 0.8) {
+                        // Very tall portrait (like movie posters)
+                        galleryItem.classList.add('portrait');
+                    } else if (aspectRatio > 1.4) {
+                        // Wide landscape
+                        galleryItem.classList.add('landscape');
+                    } else {
+                        // Square-ish
+                        galleryItem.classList.add('square');
+                    }
+                    
+                    console.log(`Image ${img.alt} aspect ratio: ${aspectRatio.toFixed(2)}, class: ${galleryItem.className}`);
+                };
+                tempImg.src = img.src;
+            });
+        });
+    </script>
+
+</body>
+</html>
