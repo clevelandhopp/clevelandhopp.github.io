@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleveland Hopp - Filmmaker Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Added favicon -->
+    <link rel="icon" href="favicon.PNG" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Libre Baskerville', serif;
+            background-color: #1c1c1c;
+            color: #f9f9f9;
+            line-height: 1.6;
+        }
+
+        nav {
+            background-color: #0d0d0d;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(249, 249, 249, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #f9f9f9;
+            text-decoration: none;
+            font-size: 13px;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f9f9f9;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        .contact-info a {
+            color: #f9f9f9;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: opacity 0.3s;
+        }
+
+        .contact-info a:hover {
+            opacity: 0.7;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 40px; /* KEPT: About page gap */
+            margin: 60px 0;
+            position: relative;
+        }
+
+        .side-images {
+            flex: 0 0 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* KEPT: About page gap */
+            position: sticky;
+            align-self: flex-start;
+            top: 100px;
+        }
+
+        .side-images.left {
+            order: 1;
+        }
+
+        .side-images.right {
+            order: 3;
+        }
+
+        .content-center {
+            flex: 1;
+            order: 2;
+        }
+
+        .side-photo {
+            width: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border-radius: 4px;
+            position: relative;
+            height: 320px;
+        }
+
+        .side-photo:hover {
+            transform: scale(1.03);
+        }
+
+        .side-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .bio-header {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+            color: #f9f9f9;
+        }
+
+        .bio-section {
+            margin: 40px 0;
+            padding: 40px;
+            border: 2px solid rgba(249, 249, 249, 0.3);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .bio-section p {
+            font-size: 15px;
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            overflow: auto;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: contain;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: #f9f9f9;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .close-modal:hover {
+            opacity: 0.7;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(249, 249, 249, 0.3);
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            color: #f9f9f9;
+        }
+
+        /* AWARDS PAGE STYLES */
+        .award-section {
+            margin-bottom: 80px; /* Increased from 60px to add more space between sections */
+        }
+
+        .award-images-row {
+            display: flex;
+            gap: 20px; /* KEPT: Other award sections gap */
+            margin: 25px 0 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .award-image-item {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border-radius: 4px;
+            position: relative;
+            height: 300px;
+        }
+
+        .award-image-item:hover {
+            transform: scale(1.03);
+        }
+
+        .award-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* NEW: Carissa image container */
+        .carissa-image-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .carissa-content {
+            flex: 1;
+        }
+
+        .carissa-image-side {
+            flex: 0 0 300px;
+            margin-top: 0; /* Aligns with Carissa heading */
+        }
+
+        .carissa-image {
+            width: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border-radius: 4px;
+            position: relative;
+            height: 375px; /* 1080:1350 ratio scaled down */
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(249, 249, 249, 0.2);
+        }
+
+        .carissa-image:hover {
+            transform: scale(1.03);
+        }
+
+        .carissa-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .work-entry {
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: rgba(249, 249, 249, 0.05);
+            border-left: 3px solid #f9f9f9;
+            transition: background-color 0.3s;
+        }
+
+        .work-entry:hover {
+            background-color: rgba(249, 249, 249, 0.08);
+        }
+
+        .work-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .work-details {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .work-entry p {
+            font-size: 12px;
+            margin-bottom: 6px;
+            line-height: 1.8;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            margin: 20px 0;
+            background-color: #000;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .reference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; /* KEPT: References page gap */
+            margin-top: 30px;
+        }
+
+        .reference-card {
+            background-color: rgba(249, 249, 249, 0.05);
+            padding: 25px;
+            border-left: 3px solid #f9f9f9;
+        }
+
+        .reference-card h4 {
+            font-size: 15px;
+            margin-bottom: 15px;
+            color: #f9f9f9;
+        }
+
+        .reference-card p {
+            font-size: 12px;
+            margin-bottom: 8px;
+            line-height: 1.8;
+        }
+
+        .reference-card a {
+            color: #f9f9f9;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(249, 249, 249, 0.3);
+            transition: border-color 0.3s;
+        }
+
+        .reference-card a:hover {
+            border-color: #f9f9f9;
+        }
+
+        .qualification-card {
+            background-color: rgba(249, 249, 249, 0.05);
+            padding: 30px;
+            margin-bottom: 25px;
+            border-left: 3px solid #f9f9f9;
+        }
+
+        .qualification-card h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .qualification-card p {
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .doc-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: rgba(249, 249, 249, 0.1);
+            border: 1px solid rgba(249, 249, 249, 0.3);
+            color: #f9f9f9;
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .doc-link:hover {
+            background-color: rgba(249, 249, 249, 0.2);
+        }
+
+        .rates-table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        .rates-table th,
+        .rates-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(249, 249, 249, 0.2);
+            font-size: 13px;
+        }
+
+        .rates-table th {
+            font-weight: 700;
+            background-color: rgba(249, 249, 249, 0.05);
+        }
+
+        .rates-note {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        .award-entry {
+            font-size: 13px;
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.8;
+        }
+
+        .award-entry::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+
+        .award-entry a {
+            color: #f9f9f9;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(249, 249, 249, 0.3);
+            transition: border-color 0.3s;
+        }
+
+        .award-entry a:hover {
+            border-color: #f9f9f9;
+        }
+
+        /* ONLY CHANGED THE ONTHOU VI FREDO? SECTION GAPS */
+        .award-content-wrapper {
+            display: flex;
+            gap: 0; /* CHANGED: Removed gap ONLY for Awards page */
+            align-items: flex-start;
+        }
+
+        .award-text {
+            flex: 1;
+        }
+
+        .award-images-side {
+            flex: 0 0 340px;
+            display: flex;
+            flex-direction: row;
+            gap: 0; /* CHANGED: Removed gap ONLY for Awards page */
+            margin-top: 25px;
+            margin-left: 0; /* CHANGED: Removed left margin ONLY for Awards page */
+        }
+
+        .award-side-image {
+            flex: 1;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border-radius: 4px;
+            position: relative;
+            height: 425px;
+            min-width: 280px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(249, 249, 249, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px;
+        }
+
+        .award-side-image:hover {
+            transform: scale(1.03);
+        }
+
+        /* Single image on Awards page uses contain to show full image */
+        .award-side-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(249, 249, 249, 0.3);
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .creator-name {
+            font-style: italic;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 1000px;
+            }
+            
+            .side-images {
+                flex: 0 0 220px;
+            }
+            
+            .side-photo {
+                height: 280px;
+            }
+            
+            .award-image-item {
+                height: 250px;
+            }
+            
+            .carissa-image-side {
+                flex: 0 0 250px;
+            }
+            
+            .carissa-image {
+                height: 312px; /* Adjusted for smaller screen */
+            }
+            
+            .award-images-side {
+                flex: 0 0 300px;
+                margin-left: 0; /* CHANGED: Keep zero margin for Awards page */
+            }
+            
+            .award-side-image {
+                height: 375px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+                gap: 40px; /* KEPT: About page gap on tablet */
+            }
+            
+            .side-images {
+                flex: none;
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px; /* KEPT: About page gap on tablet */
+                position: relative;
+                top: 0;
+            }
+            
+            .side-images .side-photo {
+                width: calc(33.333% - 10px);
+                max-width: 200px;
+                height: 220px;
+            }
+            
+            .side-images.left,
+            .side-images.right {
+                order: 2;
+            }
+            
+            .content-center {
+                order: 1;
+            }
+            
+            .award-images-row {
+                justify-content: center;
+                gap: 20px; /* KEPT: Other award sections gap */
+            }
+            
+            .award-image-item {
+                flex: 0 0 calc(33.333% - 15px);
+                min-width: 200px;
+                height: 220px;
+            }
+            
+            .carissa-image-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .carissa-image-side {
+                flex: none;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .carissa-image {
+                height: 500px; /* Adjusted for tablet */
+            }
+            
+            .award-content-wrapper {
+                flex-direction: column;
+                gap: 0; /* CHANGED: Keep zero gap for Awards page */
+            }
+            
+            .award-images-side {
+                flex: none;
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                gap: 0; /* CHANGED: Keep zero gap for Awards page */
+                margin-top: 20px;
+                margin-left: 0;
+            }
+            
+            .award-side-image {
+                width: 100%;
+                max-width: 500px;
+                height: 625px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .reference-grid {
+                grid-template-columns: 1fr;
+                gap: 25px; /* KEPT: References page gap on mobile */
+            }
+
+            .rates-table {
+                font-size: 11px;
+            }
+
+            .rates-table th,
+            .rates-table td {
+                padding: 12px;
+            }
+
+            .bio-section {
+                padding: 20px;
+            }
+            
+            .side-images .side-photo {
+                width: calc(50% - 10px);
+                height: 200px;
+            }
+            
+            .award-image-item {
+                flex: 0 0 calc(50% - 10px);
+                height: 200px;
+            }
+            
+            .carissa-image {
+                height: 375px; /* Adjusted for mobile */
+            }
+            
+            .award-side-image {
+                width: 100%;
+                max-width: 400px;
+                height: 500px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .side-images .side-photo {
+                width: 100%;
+                max-width: 300px;
+                height: 180px;
+            }
+            
+            .award-image-item {
+                flex: 0 0 100%;
+                height: 180px;
+            }
+            
+            .carissa-image {
+                height: 281px; /* Adjusted for small mobile */
+            }
+            
+            .award-side-image {
+                width: 100%;
+                max-width: 300px;
+                height: 375px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">CLEVELAND HOPP</div>
+            <div class="nav-links">
+                <a onclick="showPage('home')" class="active">ABOUT</a>
+                <a onclick="showPage('awards')">AWARDS</a>
+                <a onclick="showPage('qualifications')">QUALIFICATIONS</a>
+                <a onclick="showPage('references')">REFERENCES</a>
+                <a onclick="showPage('rates')">OFFERINGS</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- HOME PAGE (ABOUT) -->
+        <div id="home" class="page active">
+            <header>
+                <h1>CLEVELAND HOPP</h1>
+                <div class="subtitle">Filmmaker</div>
+                <div class="contact-info">
+                    <p>South African</p>
+                    <p style="margin-top: 10px;">
+                        <a href="mailto:Infoclevelandh@gmail.com">Infoclevelandh@gmail.com</a>
+                    </p>
+                    <p style="margin-top: 10px;">
+                        <a href="https://www.linkedin.com/in/clevelandhopp/" target="_blank">LinkedIn Profile</a>
+                    </p>
+                </div>
+            </header>
+
+            <div class="main-content">
+                <!-- Left side images - STICKY -->
+                <div class="side-images left">
+                    <div class="side-photo" onclick="openModal('photo1')">
+                        <img id="photo1" src="1.jpg" alt="Cleveland Hopp Photo 1">
+                    </div>
+                    <div class="side-photo" onclick="openModal('photo2')">
+                        <img id="photo2" src="2.jpg" alt="Cleveland Hopp Photo 2">
+                    </div>
+                    <div class="side-photo" onclick="openModal('photo3')">
+                        <img id="photo3" src="3.jpg" alt="Cleveland Hopp Photo 3">
+                    </div>
+                </div>
+                
+                <!-- Center content -->
+                <div class="content-center">
+                    <div class="bio-header">BIO</div>
+                    <section class="bio-section">
+                        <p>Cleveland Hopp (he/him) is an award-winning filmmaker and activist from South Africa whose work explores memory, land, queer identity, and intergenerational belonging in rural South Africa. His documentary <em>Onthou vi Fredo?</em>winner of Best Documentary and Best LGBTQ+ Representation at the FAME Inclusive Lens Awards, screened at Giornate degli Autori's Africa Calls programme, where he also served as a jury member for the UNIMED Film Award at the 82nd Venice Film Festival in Italy. Cleveland's practice bridges cinema and research, focusing on preserving and creating an archive for unsung queer heroes in rural South Africa. He was also part of the creative team behind <em>Carissa</em> (Jason Jacobs & Devon Delmar), a Venice Horizons Awardnominated feature, and continues to use film as a tool for healing, resistance, and renewal.</p>
+                    </section>
+
+                    <section class="section">
+                        <h2>FILM & TELEVISION WORK EXPERIENCE</h2>
+
+                        <h3>2025 Productions</h3>
+
+                        <div class="work-entry">
+                            <div class="work-title">UPROOTED - Virtual Reality Film</div>
+                            <div class="work-details">Production Designer & Production Manager</div>
+                            <p>Directors: Jason Jacobs & Devon Delmar</p>
+                            <p>Producer: Annemarie Du Plessis | Annemarie@meria.co.za</p>
+                        </div>
+
+                        <div class="work-entry">
+                            <div class="work-title">OPEN SECRETS - Social Justice Campaign</div>
+                            <div class="work-details">Campaigns Intern</div>
+                            <p>Director: Hennie van Vuuren</p>
+                            <p>Producer: Mamello Mosiana | mmosiana@opensecrets.org.za</p>
+                            
+                            <!-- OPEN SECRETS YouTube Video -->
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/7KmEbKRsKEU" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                        allowfullscreen 
+                                        title="OPEN SECRETS - Social Justice Campaign">
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="work-entry">
+                            <div class="work-title">MELKBROOD - Short Film</div>
+                            <div class="work-details">Production Designer</div>
+                            <p>Director: Winford Collings</p>
+                            <p>Producer: Deidre Jantjies | info@diegeesindiemasjien.co.za</p>
+                        </div>
+
+                        <h3>2024 Productions</h3>
+
+                        <div class="work-entry">
+                            <div class="work-title">CARISSA - Feature Film</div>
+                            <div class="work-details">Production Designer</div>
+                            <p>Directors: Jason Jacobs and Devon Delmar</p>
+                            <p>Reference: Devon Delmar | devondelmar@gmail.com</p>
+                            
+                            <!-- CARISSA YouTube Video -->
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/KcHgAVKLaaM" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                        allowfullscreen 
+                                        title="CARISSA - Feature Film">
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="work-entry">
+                            <div class="work-title">ONTHOU VI FREDO? - Short Documentary</div>
+                            <div class="work-details">Writer, Director & Producer</div>
+                            <p>Executive Producer: Julia Cain | Julia.cain@uct.ac.za</p>
+                            
+                            <!-- ONTHOU VI FREDO? YouTube Video -->
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/IYEklMobZ5Q" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                        allowfullscreen 
+                                        title="ONTHOU VI FREDO? - Short Documentary">
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="work-entry">
+                            <div class="work-title">HECTIC NINE-9 - Trace Teen Show</div>
+                            <div class="work-details">Online Content Producer</div>
+                            <p>Director: Ruweida Valla | rvalla@trace.tv</p>
+                        </div>
+
+                        <div class="work-entry">
+                            <div class="work-title">DIE AGTERRYER SE DOGTER - Feature Documentary</div>
+                            <div class="work-details">Production Manager</div>
+                            <p>Directors: Jason Jacobs and Devon Delmar</p>
+                            <p>Reference: Jason Jacobs | hello@jasonjacobs.art</p>
+                        </div>
+
+                        <div class="work-entry">
+                            <div class="work-title">BETTERHALF  THE STORE - Fashion Campaigns</div>
+                            <div class="work-details">Content Producer</div>
+                            <p>Director: Sarah Byram | sarahbyram@gmail.com</p>
+                        </div>
+
+                        <h3>In Post-Production</h3>
+
+                        <div class="work-entry">
+                            <div class="work-title">VENUS - Feature Film</div>
+                            <div class="work-details">Production Designer</div>
+                            <p>Director/Producer: Deidre Jantjies</p>
+                        </div>
+
+                        <div class="work-entry">
+                            <div class="work-title">VARIATIONS ON A THEME - Feature Documentary</div>
+                            <div class="work-details">Production Designer & Production Manager</div>
+                            <p>Directors: Jason Jacobs & Devon Delmar</p>
+                            <p>Producer: Annemarie Du Plessis</p>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <h2>ACADEMIC EXPERIENCE</h2>
+                        
+                        <div class="work-entry">
+                            <div class="work-title">Academic Tutor - Film and Television Studies</div>
+                            <div class="work-details">University of Cape Town | FAM1001S - Analysing Film and Television</div>
+                            <p>Skills: Guest Lecturing, Facilitation, Assessment, Communication, Creative Problem Solving</p>
+                            <p>Course Convenor: Dr Ian-Malcolm Rijsdijk (ian.rijsdijk@uct.ac.za)</p>
+                        </div>
+
+                        <div class="work-entry">
+                            <div class="work-title">Academic Tutor & Mentor - African Feminist Studies</div>
+                            <div class="work-details">University of Cape Town | AFS2100F - Debates on Gender Politics and Sexualities</div>
+                            <p>Course Convenor: Dr Zamambo Mkhize (zamambo.mkhize@uct.ac.za)</p>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- Right side images - STICKY -->
+                <div class="side-images right">
+                    <div class="side-photo" onclick="openModal('photo4')">
+                        <img id="photo4" src="5.jpg" alt="Cleveland Hopp Photo 4">
+                    </div>
+                    <div class="side-photo" onclick="openModal('photo5')">
+                        <img id="photo5" src="4.jpg" alt="Cleveland Hopp Photo 5">
+                    </div>
+                    <div class="side-photo" onclick="openModal('photo6')">
+                        <img id="photo6" src="6.jpg" alt="Cleveland Hopp Photo 6">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AWARDS PAGE -->
+        <div id="awards" class="page">
+            <h2>AWARDS & RECOGNITION</h2>
+
+            <!-- CARISSA Section with image -->
+            <div class="award-section">
+                <div class="carissa-image-container">
+                    <div class="carissa-content">
+                        <h3>CARISSA</h3>
+                        <div class="award-entry"><a href="https://variety.com" target="_blank">Featured Article - Variety 2024</a></div>
+                        <div class="award-entry">Official Selection - Venice International Film Festival 2024 (Nominee for Venice Horizons Award)</div>
+                        <div class="award-entry">Official Selection - Santa Barbara International Film Festival 2025</div>
+                        <div class="award-entry">Official Selection - Blackstar International Film Festival</div>
+                        <div class="award-entry">Official Selection - Silwerskermfees 2025</div>
+                    </div>
+                    
+                    <!-- Carissa image -->
+                    <div class="carissa-image-side">
+                        <div class="carissa-image" onclick="openModal('carissaImage')">
+                            <img id="carissaImage" src="carr.JPG" alt="CARISSA Award Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONTHOU VI FREDO? Section -->
+            <div class="award-section">
+                <div class="award-content-wrapper">
+                    <div class="award-text">
+                        <h3>ONTHOU VI FREDO?</h3>
+                      
+                        <div class="award-entry"><a href="https://www.mambaonline.com" target="_blank">Featured Article - Mamba Online 2024</a></div>
+                        <div class="award-entry">Official Selection - Durban Gay and Lesbian Film Festival 2024</div>
+                        <div class="award-entry">Official Selection - Human Rights Film Festival 2024</div>
+                        <div class="award-entry">Official Selection - Joburg Film Festival 2025</div>
+                        <div class="award-entry">Official Selection - Fame Shorts Film Festival 2025</div>
+                        <div class="award-entry">Winner - Best Representation of LGBTQ+ Community, Fame Week Africa Inclusive Lens 2025</div>
+                        <div class="award-entry">Winner - Best Documentary, Fame Shorts Film Festival 2025</div>
+                        <div class="award-entry">Official Selection - Encounters International Documentary Film Festival 2025</div>
+                        <div class="award-entry">Official Selection - Giornate degli Autori, Venice International Film Festival 2025</div>
+                    </div>
+                    
+                    <!-- ONTHOU VI FREDO? Images - Only showing the last image (ovf1.jpg) -->
+                    <div class="award-images-side">
+                        <div class="award-side-image" onclick="openModal('award1c')">
+                            <img id="award1c" src="D:\cleveland_website\ovf1.jpg" alt="ONTHOU VI FREDO? Award Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUALIFICATIONS PAGE -->
+        <div id="qualifications" class="page">
+            <h2>QUALIFICATIONS & PROOF OF EDUCATION</h2>
+            
+            <div class="qualification-card">
+                <h4>Bachelor of Arts Honours in Film Practice and Theory</h4>
+                <p>with distinction in Documentary Studies</p>
+                <p>University of Cape Town | 2024</p>
+                <a href="YOUR_HONOURS_CERTIFICATE_LINK" class="doc-link" target="_blank">=Ä View Certificate</a>
+            </div>
+
+            <div class="qualification-card">
+                <h4>Bachelor of Arts in Film and Television Studies</h4>
+                <p>specialising in Screen Production</p>
+                <p>University of Cape Town | 2022</p>
+                <a href="YOUR_BA_CERTIFICATE_LINK" class="doc-link" target="_blank">=Ä View Certificate</a>
+            </div>
+
+            <p style="margin-top: 40px; font-size: 12px; opacity: 0.7;">
+                To update these links with your actual qualification documents, please replace YOUR_HONOURS_CERTIFICATE_LINK and YOUR_BA_CERTIFICATE_LINK with the actual URLs from your Google Drive.
+            </p>
+        </div>
+
+        <!-- REFERENCES PAGE -->
+        <div id="references" class="page">
+            <h2>REFERENCES</h2>
+            
+            <div class="reference-grid">
+                <div class="reference-card">
+                    <h4>Devon Delmar</h4>
+                    <p>Director - CARISSA</p>
+                    <p>Email: <a href="mailto:devondelmar@gmail.com">devondelmar@gmail.com</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Jason Jacobs</h4>
+                    <p>Director - DIE AGTERRYER SE DOGTER</p>
+                    <p>Email: <a href="mailto:hello@jasonjacobs.art">hello@jasonjacobs.art</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Julia Cain</h4>
+                    <p>Executive Producer - ONTHOU VI FREDO?</p>
+                    <p>Email: <a href="mailto:Julia.cain@uct.ac.za">Julia.cain@uct.ac.za</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Ruweida Valla</h4>
+                    <p>Director - HECTIC NINE-9</p>
+                    <p>Email: <a href="mailto:rvalla@trace.tv">rvalla@trace.tv</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Sarah Byram</h4>
+                    <p>Director - BETTERHALF Fashion Campaigns</p>
+                    <p>Email: <a href="mailto:sarahbyram@gmail.com">sarahbyram@gmail.com</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Deidre Jantjies</h4>
+                    <p>Producer/Director - MELKBROOD & VENUS</p>
+                    <p>Email: <a href="mailto:info@diegeesindiemasjien.co.za">info@diegeesindiemasjien.co.za</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Mamello Mosiana</h4>
+                    <p>Producer - OPEN SECRETS</p>
+                    <p>Email: <a href="mailto:mmosiana@opensecrets.org.za">mmosiana@opensecrets.org.za</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Annemarie Du Plessis</h4>
+                    <p>Producer - UPROOTED & VARIATIONS ON A THEME</p>
+                    <p>Email: <a href="mailto:Annemarie@meria.co.za">Annemarie@meria.co.za</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Dr Ian-Malcolm Rijsdijk</h4>
+                    <p>Course Convenor - Film and Television Studies, UCT</p>
+                    <p>Email: <a href="mailto:ian.rijsdijk@uct.ac.za">ian.rijsdijk@uct.ac.za</a></p>
+                </div>
+
+                <div class="reference-card">
+                    <h4>Dr Zamambo Mkhize</h4>
+                    <p>Course Convenor - African Feminist Studies, UCT</p>
+                    <p>Email: <a href="mailto:zamambo.mkhize@uct.ac.za">zamambo.mkhize@uct.ac.za</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- OFFERINGS PAGE -->
+        <div id="rates" class="page">
+            <h2>PROFESSIONAL OFFERINGS</h2>
+            
+            <table class="rates-table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Day Rate (10 hours)</th>
+                        <th>Overtime (per hour)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Production Designer</td>
+                        <td>R2,500 - R3,500</td>
+                        <td>R250 - R350</td>
+                    </tr>
+                    <tr>
+                        <td>Production Manager</td>
+                        <td>R2,000 - R3,000</td>
+                        <td>R200 - R300</td>
+                    </tr>
+                    <tr>
+                        <td>Content Producer</td>
+                        <td>R2,000 - R2,800</td>
+                        <td>R200 - R280</td>
+                    </tr>
+                    <tr>
+                        <td>Director (Short Form)</td>
+                        <td>R3,000 - R4,500</td>
+                        <td>R300 - R450</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p class="rates-note">Note: Rates are negotiable based on project scope, budget, and duration. All rates are in South African Rand (ZAR).</p>
+        </div>
+    </div>
+
+    <!-- Modal for full-size images -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Cleveland Hopp. All rights reserved. | Created by <span class="creator-name">Wade van Zyl</span></p>
+    </footer>
+
+    <script>
+        // FIXED Page navigation - SIMPLIFIED VERSION
+        function showPage(pageId, e) {
+            // Get the clicked element
+            const clickedElement = e.target;
+            
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update active nav link
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Mark clicked link as active
+            clickedElement.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Image modal functionality
+        function openModal(imageId) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const img = document.getElementById(imageId);
+            
+            if (img && modalImg) {
+                modal.style.display = "block";
+                modalImg.src = img.src;
+                modalImg.alt = img.alt;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize first page on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set home page as active by default
+            const homePage = document.getElementById('home');
+            const homeLink = document.querySelector('.nav-links a[onclick*="home"]');
+            
+            if (homePage) {
+                homePage.classList.add('active');
+            }
+            if (homeLink) {
+                homeLink.classList.add('active');
+            }
+            
+            // Add proper click listeners to all nav links
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Get the page ID from the onclick attribute
+                    const onclickAttr = this.getAttribute('onclick');
+                    if (onclickAttr) {
+                        const match = onclickAttr.match(/showPage\('([^']+)'/);
+                        if (match && match[1]) {
+                            const pageId = match[1];
+                            showPage(pageId, e);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
