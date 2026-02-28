@@ -1745,7 +1745,7 @@
                     synopsis: 'A young woman in a South African village who, pressured by her grandmother, must choose between a city job opportunity and taking over her grandfather\'s rooibos tea farm, which is threatened by development, forcing her to confront her heritage and identity.',
                     roles: 'Production Designer & Marketing Coordinator',
                     type: 'Feature Film',
-                    trailer: 'https://www.youtube.com/watch?v=KcHgAVKLaaM',
+                    trailer: 'carissa.mp4',
                     additionalImages: ['Carissa_10.3.2.jpg', 'Carrissa_Ad1.jpg', 'Carissa_Additional_1.jpg']
                 },
                 'Venus': {
@@ -1770,7 +1770,7 @@
                     synopsis: 'A mother\'s quest for justice and remembrance for her child, Alfredo, serves as a poignant exploration of loss and the enduring power of community memory in Cape Town.',
                     roles: 'Writer, Director & Co-Producer',
                     type: 'Short Film',
-                    trailer: 'https://www.youtube.com/watch?v=IYEklMobZ5Q',
+                    trailer: 'onthou_vi_fredo.mp4',
                     additionalImages: ['Onthou vi Fredo_Thumbnail_Poster.jpg', 'frame_13721.jpg', 'Auntie Sophia.jpg']
                 },
                 'Melkbrood': {
@@ -1788,7 +1788,7 @@
                     synopsis: 'Through the powerful testimonies of communities impacted by coal mining, a haunting journey unfolds to expose the devastating human and environmental costs of energy profiteering in South Africa.',
                     roles: 'Writer, co-director, co-producer, Marketing Coordinator',
                     type: 'Short Film',
-                    trailer: 'https://www.youtube.com/watch?v=7KmEbKRsKEU',
+                    trailer: 'open_secrets.mp4',
                     additionalImages: ['We_Cant_See_The_Sunset.JPG', 'We_Cant_See_The_Sunset_Ad2.png', 'We_Cant_See_The_Sunset_Ad1.png']
                 }
             };
@@ -2247,7 +2247,14 @@
             console.log('Trailer URL:', trailerUrl);
             
             // Check if it's a YouTube URL or local file
-            if (trailerUrl.includes('youtube.com') || trailerUrl.includes('youtu.be')) {
+            if (trailerUrl.endsWith('.mp4')) {
+                modalContent.innerHTML = `
+                    <div class="video-container">
+                        <video controls autoplay style="position:absolute;top:0;left:0;width:100%;height:100%;background:#000;">
+                            <source src="${trailerUrl}" type="video/mp4">
+                        </video>
+                    </div>`;
+            } else if (trailerUrl.includes('youtube.com') || trailerUrl.includes('youtu.be')) {
                 // Handle YouTube videos
                 const videoId = trailerUrl.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
                 if (!videoId || !videoId[1]) {
