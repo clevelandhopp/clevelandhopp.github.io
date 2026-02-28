@@ -1748,7 +1748,7 @@
                     synopsis: 'A young woman in a South African village who, pressured by her grandmother, must choose between a city job opportunity and taking over her grandfather\'s rooibos tea farm, which is threatened by development, forcing her to confront her heritage and identity.',
                     roles: 'Production Designer & Marketing Coordinator',
                     type: 'Feature Film',
-                    trailer: 'carissa.mp4',
+                    trailer: 'https://www.youtube.com/watch?v=KcHgAVKLaaM',
                     additionalImages: ['Carissa_10.3.2.jpg', 'Carrissa_Ad1.jpg', 'Carissa_Additional_1.jpg']
                 },
                 'Venus': {
@@ -1773,7 +1773,7 @@
                     synopsis: 'A mother\'s quest for justice and remembrance for her child, Alfredo, serves as a poignant exploration of loss and the enduring power of community memory in Cape Town.',
                     roles: 'Writer, Director & Co-Producer',
                     type: 'Short Film',
-                    trailer: 'onthou_vi_fredo.mp4',
+                    trailer: 'https://www.youtube.com/watch?v=IYEklMobZ5Q',
                     additionalImages: ['Onthou vi Fredo_Thumbnail_Poster.jpg', 'frame_13721.jpg', 'Auntie Sophia.jpg']
                 },
                 'Melkbrood': {
@@ -1791,7 +1791,7 @@
                     synopsis: 'Through the powerful testimonies of communities impacted by coal mining, a haunting journey unfolds to expose the devastating human and environmental costs of energy profiteering in South Africa.',
                     roles: 'Writer, co-director, co-producer, Marketing Coordinator',
                     type: 'Short Film',
-                    trailer: 'open_secrets.mp4',
+                    trailer: 'https://www.youtube.com/watch?v=7KmEbKRsKEU',
                     additionalImages: ['We_Cant_See_The_Sunset.JPG', 'We_Cant_See_The_Sunset_Ad2.png', 'We_Cant_See_The_Sunset_Ad1.png']
                 }
             };
@@ -2332,6 +2332,10 @@
                 
                 console.log('Local video element created');
             }
+            
+            // Close image modal first, then show trailer modal
+            const imageModal = document.getElementById('imageModal');
+            imageModal.style.display = 'none';
             
             // Show trailer modal
             const trailerModal = document.getElementById('trailerModal');
