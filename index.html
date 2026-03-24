@@ -1198,6 +1198,176 @@
             opacity: 1;
             transform: translateY(0);
         }
+    }
+
+    /* ============================================
+       MOBILE ENHANCEMENTS — max-width: 480px
+       Desktop/laptop styles completely untouched
+    ============================================ */
+
+    @media (max-width: 480px) {
+
+        /* --- Navigation: hide links, show hamburger --- */
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.98);
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            z-index: 999;
+        }
+
+        .nav-links.open {
+            display: flex;
+        }
+
+        .nav-links a {
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        /* --- Hero --- */
+        .hero h1 {
+            font-size: 1.8rem;
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .cta-button {
+            padding: 14px 30px;
+            font-size: 13px;
+        }
+
+        /* --- Sections --- */
+        .section {
+            padding: 50px 16px;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            margin-bottom: 30px;
+        }
+
+        /* --- About --- */
+        .about-content {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .about-text {
+            font-size: 15px;
+        }
+
+        .about-image {
+            min-height: 300px;
+        }
+
+        /* --- Gallery --- */
+        .gallery {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .gallery-item {
+            min-height: 260px;
+        }
+
+        /* --- Awards --- */
+        .carissa-image-container {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .carissa-image-side {
+            flex: none;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .carissa-image {
+            height: 340px;
+            max-width: 100%;
+        }
+
+        .award-content-wrapper {
+            flex-direction: column;
+        }
+
+        .award-images-side {
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .award-side-image {
+            width: 100%;
+            max-width: 100%;
+            height: 340px;
+        }
+
+        .award-entry {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* --- Offerings table --- */
+        .offerings-table td {
+            padding: 18px 12px;
+            font-size: 13px;
+        }
+
+        /* --- Contact --- */
+        .contact-content {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .contact-form {
+            padding: 24px 16px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 30px 16px;
+        }
+
+        /* --- Modal --- */
+        .modal-content {
+            width: 98vw;
+            height: 90vh;
+        }
+
+        .close-modal {
+            top: 12px;
+            right: 16px;
+            font-size: 28px;
+        }
+    }
     </style>
 </head>
 <body>
@@ -1210,6 +1380,9 @@
     <nav id="navbar">
         <div class="nav-container">
             <div class="logo" onclick="scrollToTop()">cleveland hopp</div>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()" style="display:none;">
+                <span></span><span></span><span></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="#home" class="nav-link active">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
@@ -1252,7 +1425,7 @@
                 
                 <p>His debut documentary, Onthou vi Fredo?, pays tribute to murdered drag queen Alfredo April, whose case remains unsolved. The film won Best Documentary and Best LGBTQ+ Representation at the FAME Inclusive Lens Awards and screened in the Africa Calls programme at Giornate degli Autori during the 82nd Venice Film Festival.</p>
                 
-                <p>As part of the Kraal Collective, Cleveland contributed to Carissa by Jason Jacobs and Devon Delmar, nominated for the Venice Horizons Award, and Variations on a Theme, which won the Tiger Award at International Film Festival Rotterdam2026.</p>
+                <p>As part of the SAFTA award winning Collective, Kraal Cleveland contributed to Carissa by Jason Jacobs and Devon Delmar, nominated for the Venice Horizons Award, and Variations on a Theme, which won the Tiger Award at International Film Festival Rotterdam2026.</p>
                 
                 <p>Cleveland believes film can hold space for grief, spark change, and leave something infinite.</p>
                 
@@ -1389,6 +1562,7 @@
                 <div class="carissa-content">
                     <h3>VARIATIONS ON A THEME</h3>
                     <div class="award-entry" style="margin-top: 20px;"><a href="https://iffr.com/en/blog-iffr-2026-tiger-big-screen-award-winners" target="_blank" style="color: #ff4444; text-decoration: underline;">Winner Tiger Award: Best Film, International Film Festival Rotterdam</a></div>
+                    <div class="award-entry"><a href="https://iol.co.za/entertainment/movies/2026-03-09-variations-on-a-theme-a-poignant-exploration-of-community-and-resilience-at-the-joburg-film-festival/" target="_blank" style="color: #ff4444; text-decoration: underline;">Winner - Best African Film, Joburg Film Festival 2026</a></div>
                 </div>
             </div>
         </div>
@@ -1541,7 +1715,7 @@
         const heroBackgroundImages = [
             'New_BTS_Slide/BTS 3 xtra.jpg',
             'New_BTS_Slide/BTS 4 xtra.jpeg',
-            'New_BTS_Slide/BTS 5 xtra.jpeg',
+            'New_BTS_Slide/BTS 5 xtra UPATED_NEW.PNG',
             'New_BTS_Slide/OVIF BTS 2 .JPG',
             'New_BTS_Slide/OVIF BTS 4.JPG',
             'ovf.jpg',
@@ -1765,6 +1939,7 @@
                     synopsis: 'An elderly goat herder in South Africa\'s remote Kamiesberge falls victim to a scam promising reparations for her father\'s unpaid WWII service, while her 80th birthday celebration threatens her cherished independence.',
                     roles: 'Production Manager, Production Designer & Marketing Coordinator',
                     type: 'Feature Film',
+                    trailer: 'https://www.youtube.com/watch?v=KNdIQCBvWhI',
                     additionalImages: ['Variations_On_A_Theme_Behind_The_Scenes.PNG', 'Variations_On_A_Theme_Ad1.jpg', 'Variations_On_A_Theme_Ad2.jpg']
                 },
                 'Onthou vi Fredo?': {
@@ -2372,6 +2547,33 @@
                 closeModal();
             }
         }
+
+        // Hamburger menu
+        function toggleMenu() {
+            const nav = document.querySelector('.nav-links');
+            const hamburger = document.getElementById('hamburger');
+            nav.classList.toggle('open');
+        }
+
+        // Show hamburger only on mobile
+        function checkMobile() {
+            const hamburger = document.getElementById('hamburger');
+            if (window.innerWidth <= 480) {
+                hamburger.style.display = 'flex';
+            } else {
+                hamburger.style.display = 'none';
+                document.querySelector('.nav-links').classList.remove('open');
+            }
+        }
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        // Close menu when a nav link is clicked
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('open');
+            });
+        });
 
         // Scroll to top function
         function scrollToTop() {
