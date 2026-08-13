@@ -416,7 +416,7 @@
         
         /* Carissa gallery item */
         .gallery-item[onclick*="Carissa"] {
-            background-image: url('Carissa_poster.jpg') !important;
+            background-image: url('Carissa_poster_thumb.jpg') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
@@ -1506,7 +1506,7 @@
         <h2 class="section-title">ABOUT</h2>
         <div class="about-content">
             <div class="about-image fade-in">
-                <img src="Cleveland_Hopp_Bio_Picture.jpg" alt="Cleveland Hopp">
+                <img src="Cleveland_Hopp_Bio_Picture.jpg" alt="Cleveland Hopp" loading="lazy" decoding="async">
             </div>
             <div class="about-text fade-in">
                 <p>Cleveland Hopp is a filmmaker and activist from Malmesbury, South Africa. He holds an Honours degree in Film Theory & Practice from the University of Cape Town, graduating with distinction in documentary studies. Beyond academia, his deepest education has come from the streets, salons, corner stores, community halls, and the people who shape his life. He believes film is a tool for healing, justice, and for honouring those who came before.</p>
@@ -1536,21 +1536,21 @@
         <div class="film-category">
             <h3 class="category-title">Feature Films</h3>
             <div class="gallery">
-                <div class="gallery-item" onclick="openFilmModal('Carissa_poster.jpg', 'Carissa')" style="background-image: url('Carissa_poster.jpg')">
+                <div class="gallery-item" onclick="openFilmModal('Carissa_poster.jpg', 'Carissa')" style="background-image: url('Carissa_poster_thumb.jpg')">
                     <div class="gallery-overlay">
                         <h3>Carissa</h3>
                         <p>Feature Film - Production Designer & Costume Designer</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openFilmModal('V.jpg', 'Venus')">
-                    <img src="V.jpg" alt="Venus">
+                    <img src="V.jpg" alt="Venus" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <h3>Venus</h3>
                         <p>Feature Film - Production Designer</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openFilmModal('Variations_On_A_Theme_Behind_The_Scenes.PNG', 'Variations on a Theme')">
-                    <img src="92140.jpeg" alt="Variations on a Theme">
+                    <img src="92140_thumb.jpg" alt="Variations on a Theme" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <h3>Variations on a Theme</h3>
                         <p>Feature Film - Production Manager & Designer</p>
@@ -1566,28 +1566,28 @@
                 <button type="button" class="carousel-arrow carousel-arrow-left" onclick="scrollCarousel('shortFilmsCarousel', -1)" aria-label="Scroll short films left">&#10094;</button>
                 <div class="gallery carousel-track" id="shortFilmsCarousel">
                     <div class="gallery-item" onclick="openFilmModal('Onthou vi Fredo_Thumbnail_Poster.jpg', 'Onthou vi Fredo?')">
-                        <img src="Onthou vi Fredo_Thumbnail_Poster.jpg" alt="Onthou vi Fredo?">
+                        <img src="Onthou vi Fredo_Thumbnail_Poster_thumb.jpg" alt="Onthou vi Fredo?" loading="lazy" decoding="async">
                         <div class="gallery-overlay">
                             <h3>Onthou vi Fredo?</h3>
                             <p>Short Film - Director, Writer, Co-Producer, Marketing and Distributor producer</p>
                         </div>
                     </div>
                     <div class="gallery-item" onclick="openFilmModal('We_Cant_See_The_Sunset.JPG', 'WeCantSeeTheSunset')">
-                        <img src="We_Cant_See_The_Sunset.JPG" alt="We Can't See The Sunset">
+                        <img src="We_Cant_See_The_Sunset_thumb.jpg" alt="We Can't See The Sunset" loading="lazy" decoding="async">
                         <div class="gallery-overlay">
                             <h3>We Can't See The Sunset</h3>
                             <p>Short Film - Writer, Co-director & Co-producer</p>
                         </div>
                     </div>
                     <div class="gallery-item" onclick="openFilmModal('Melkbrood-2.jpeg', 'Melkbrood')">
-                        <img src="Melkbrood-2.jpeg" alt="Melkbrood">
+                        <img src="Melkbrood-2_thumb.jpg" alt="Melkbrood" loading="lazy" decoding="async">
                         <div class="gallery-overlay">
                             <h3>Melkbrood</h3>
                             <p>Short Film - Production Designer</p>
                         </div>
                     </div>
                     <div class="gallery-item portrait" onclick="openFilmModal('AS_EK_KON_KIES.jpg', 'AS EK KON KIES')">
-                        <img src="AS_EK_KON_KIES.jpg" alt="AS EK KON KIES">
+                        <img src="AS_EK_KON_KIES_thumb.jpg" alt="AS EK KON KIES" loading="lazy" decoding="async">
                         <div class="gallery-overlay">
                             <h3>AS EK KON KIES</h3>
                             <p>Short Film - Production Designer</p>
@@ -1609,7 +1609,7 @@
                 <!-- ONTHOU VI FREDO? Images -->
                 <div class="award-images-side">
                     <div class="award-side-image" onclick="openModal('award1c')">
-                        <img id="award1c" src="Onthou vi Fredo_Thumbnail_Poster_old.jpg" alt="ONTHOU VI FREDO? Award Image">
+                        <img id="award1c" src="Onthou vi Fredo_Thumbnail_Poster_old_thumb.jpg" data-full-src="Onthou vi Fredo_Thumbnail_Poster_old.jpg" alt="ONTHOU VI FREDO? Award Image" loading="lazy" decoding="async">
                     </div>
                 </div>
                 
@@ -1634,7 +1634,7 @@
                 <!-- Carissa image -->
                 <div class="carissa-image-side">
                     <div class="carissa-image" onclick="openModal('carissaAwardImage')">
-                        <img id="carissaAwardImage" src="Carissa poster 290724.jpg" alt="CARISSA Award Image">
+                        <img id="carissaAwardImage" src="Carissa poster 290724_thumb.jpg" data-full-src="Carissa poster 290724.jpg" alt="CARISSA Award Image" loading="lazy" decoding="async">
                     </div>
                 </div>
                 
@@ -1656,7 +1656,7 @@
                 <!-- Variations on a Theme image -->
                 <div class="carissa-image-side">
                     <div class="carissa-image" onclick="openModal('variationsImage')">
-                        <img id="variationsImage" src="Variations_on_a_Theme_poster.jpg" alt="VARIATIONS ON A THEME Award Image">
+                        <img id="variationsImage" src="Variations_on_a_Theme_poster_thumb.jpg" data-full-src="Variations_on_a_Theme_poster.jpg" alt="VARIATIONS ON A THEME Award Image" loading="lazy" decoding="async">
                     </div>
                 </div>
                 
@@ -1816,7 +1816,7 @@
         const heroBackgroundImages = [
             'New_BTS_Slide/BTS 3 xtra.jpg',
             'New_BTS_Slide/BTS 4 xtra.jpeg',
-            'New_BTS_Slide/BTS 5 xtra UPATED_NEW.PNG',
+            'New_BTS_Slide/BTS 5 xtra.jpeg',
             'New_BTS_Slide/OVIF BTS 2 .JPG',
             'New_BTS_Slide/OVIF BTS 4.JPG',
             'ovf.jpg',
@@ -2449,7 +2449,8 @@
             // Check if the parameter is an element ID or a direct src
             const imgElement = document.getElementById(imageIdOrSrc);
             if (imgElement && imgElement.src) {
-                modalImg.src = imgElement.src;
+                // Prefer the full-resolution original if this thumbnail has one
+                modalImg.src = imgElement.dataset.fullSrc || imgElement.src;
             } else {
                 modalImg.src = imageIdOrSrc;
             }
