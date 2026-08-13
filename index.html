@@ -1540,27 +1540,38 @@
         <!-- Feature Films -->
         <div class="film-category">
             <h3 class="category-title">Feature Films</h3>
-            <div class="gallery">
-                <div class="gallery-item" onclick="openFilmModal('Carissa_poster.jpg', 'Carissa')" style="background-image: url('Carissa_poster_thumb.webp')">
-                    <div class="gallery-overlay">
-                        <h3>Carissa</h3>
-                        <p>Feature Film - Production Designer & Costume Designer</p>
+            <div class="carousel-wrapper">
+                <button type="button" class="carousel-arrow carousel-arrow-left" onclick="scrollCarousel('featureFilmsCarousel', -1)" aria-label="Scroll feature films left">&#10094;</button>
+                <div class="gallery carousel-track" id="featureFilmsCarousel">
+                    <div class="gallery-item" onclick="openFilmModal('Carissa_poster.jpg', 'Carissa')" style="background-image: url('Carissa_poster_thumb.webp')">
+                        <div class="gallery-overlay">
+                            <h3>Carissa</h3>
+                            <p>Feature Film - Production Designer & Costume Designer</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openFilmModal('V.jpg', 'Venus')">
+                        <img src="V.jpg" alt="Venus" loading="lazy" decoding="async">
+                        <div class="gallery-overlay">
+                            <h3>Venus</h3>
+                            <p>Feature Film - Production Designer</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openFilmModal('Variations_On_A_Theme_Behind_The_Scenes.PNG', 'Variations on a Theme')">
+                        <img src="92140_thumb.jpg" alt="Variations on a Theme" loading="lazy" decoding="async">
+                        <div class="gallery-overlay">
+                            <h3>Variations on a Theme</h3>
+                            <p>Feature Film - Production Manager & Designer</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item portrait" onclick="openFilmModal('Al_Wat_Ek_Weet.jpg', 'Al wat ek weet')">
+                        <img src="Al_Wat_Ek_Weet_thumb.jpg" alt="Al wat ek weet" loading="lazy" decoding="async">
+                        <div class="gallery-overlay">
+                            <h3>Al wat ek weet</h3>
+                            <p>Feature Film - Coordinator for Pick-up Shoot</p>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-item" onclick="openFilmModal('V.jpg', 'Venus')">
-                    <img src="V.jpg" alt="Venus" loading="lazy" decoding="async">
-                    <div class="gallery-overlay">
-                        <h3>Venus</h3>
-                        <p>Feature Film - Production Designer</p>
-                    </div>
-                </div>
-                <div class="gallery-item" onclick="openFilmModal('Variations_On_A_Theme_Behind_The_Scenes.PNG', 'Variations on a Theme')">
-                    <img src="92140_thumb.jpg" alt="Variations on a Theme" loading="lazy" decoding="async">
-                    <div class="gallery-overlay">
-                        <h3>Variations on a Theme</h3>
-                        <p>Feature Film - Production Manager & Designer</p>
-                    </div>
-                </div>
+                <button type="button" class="carousel-arrow carousel-arrow-right" onclick="scrollCarousel('featureFilmsCarousel', 1)" aria-label="Scroll feature films right">&#10095;</button>
             </div>
         </div>
         
@@ -2054,6 +2065,13 @@
                     type: 'Feature Film',
                     trailer: 'https://www.youtube.com/watch?v=KNdIQCBvWhI',
                     additionalImages: ['Variations_On_A_Theme_Behind_The_Scenes.PNG', 'Variations_On_A_Theme_Ad1.jpg', 'Variations_On_A_Theme_Ad2.jpg']
+                },
+                'Al wat ek weet': {
+                    year: '2026',
+                    directors: 'Devon Delmar & Jason Jacobs',
+                    synopsis: 'Al wat ek weet is a coming-of-age drama that explores the complicated emotional landscape of adolescence, family and the stories we carry with us as we grow up. Based on Marita van der Vyver\'s novel, the film follows young people navigating relationships, identity, memory and the often-conflicting expectations placed upon them by family and society. Set against a distinctly South African landscape, the film explores the space between childhood and adulthood, a period in which the things we think we know about ourselves, our families and the world around us begin to shift.',
+                    roles: 'Coordinator for Pick-up Shoot',
+                    type: 'Feature Film'
                 },
                 'Onthou vi Fredo?': {
                     year: '2024',
@@ -2836,6 +2854,7 @@
 
             document.addEventListener('DOMContentLoaded', function() {
                 initCarousel('shortFilmsCarousel');
+                initCarousel('featureFilmsCarousel');
             });
         })();
     </script>
