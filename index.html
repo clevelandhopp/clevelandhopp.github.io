@@ -432,6 +432,95 @@
             height: 350px;
         }
 
+        /* Tall portrait posters (like movie posters) - show the complete image, don't crop it */
+        .gallery-item.portrait {
+            height: 400px;
+        }
+
+        .gallery-item.portrait img {
+            object-fit: contain;
+            background-color: #0a0a0a;
+        }
+
+        /* Short Films infinite carousel */
+        .carousel-wrapper {
+            position: relative;
+            margin-top: 60px;
+            padding: 0 60px;
+        }
+
+        .carousel-track {
+            display: flex;
+            grid-template-columns: none;
+            gap: 30px;
+            margin-top: 0;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-track .gallery-item {
+            flex: 0 0 350px;
+            width: 350px;
+            scroll-snap-align: start;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: rgba(10, 10, 10, 0.7);
+            color: #ffffff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .carousel-arrow:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: #0a0a0a;
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .carousel-arrow-left {
+            left: 0;
+        }
+
+        .carousel-arrow-right {
+            right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .carousel-wrapper {
+                padding: 0 45px;
+            }
+
+            .carousel-arrow {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+
+            .carousel-track .gallery-item {
+                flex-basis: 280px;
+                width: 280px;
+            }
+        }
+
         .gallery-item:hover {
             transform: translateY(-10px) scale(1.03);
             box-shadow: 0 20px 40px rgba(255, 255, 255, 0.2);
@@ -1473,35 +1562,39 @@
         <!-- Short Films -->
         <div class="film-category">
             <h3 class="category-title">Short Films</h3>
-            <div class="gallery">
-                <div class="gallery-item" onclick="openFilmModal('Onthou vi Fredo_Thumbnail_Poster.jpg', 'Onthou vi Fredo?')">
-                    <img src="Onthou vi Fredo_Thumbnail_Poster.jpg" alt="Onthou vi Fredo?">
-                    <div class="gallery-overlay">
-                        <h3>Onthou vi Fredo?</h3>
-                        <p>Short Film - Director, Writer, Co-Producer, Marketing and Distributor producer</p>
+            <div class="carousel-wrapper">
+                <button type="button" class="carousel-arrow carousel-arrow-left" onclick="scrollCarousel('shortFilmsCarousel', -1)" aria-label="Scroll short films left">&#10094;</button>
+                <div class="gallery carousel-track" id="shortFilmsCarousel">
+                    <div class="gallery-item" onclick="openFilmModal('Onthou vi Fredo_Thumbnail_Poster.jpg', 'Onthou vi Fredo?')">
+                        <img src="Onthou vi Fredo_Thumbnail_Poster.jpg" alt="Onthou vi Fredo?">
+                        <div class="gallery-overlay">
+                            <h3>Onthou vi Fredo?</h3>
+                            <p>Short Film - Director, Writer, Co-Producer, Marketing and Distributor producer</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openFilmModal('We_Cant_See_The_Sunset.JPG', 'WeCantSeeTheSunset')">
+                        <img src="We_Cant_See_The_Sunset.JPG" alt="We Can't See The Sunset">
+                        <div class="gallery-overlay">
+                            <h3>We Can't See The Sunset</h3>
+                            <p>Short Film - Writer, Co-director & Co-producer</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openFilmModal('Melkbrood-2.jpeg', 'Melkbrood')">
+                        <img src="Melkbrood-2.jpeg" alt="Melkbrood">
+                        <div class="gallery-overlay">
+                            <h3>Melkbrood</h3>
+                            <p>Short Film - Production Designer</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item portrait" onclick="openFilmModal('AS_EK_KON_KIES.jpg', 'AS EK KON KIES')">
+                        <img src="AS_EK_KON_KIES.jpg" alt="AS EK KON KIES">
+                        <div class="gallery-overlay">
+                            <h3>AS EK KON KIES</h3>
+                            <p>Short Film - Production Designer</p>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-item" onclick="openFilmModal('We_Cant_See_The_Sunset.JPG', 'WeCantSeeTheSunset')">
-                    <img src="We_Cant_See_The_Sunset.JPG" alt="We Can't See The Sunset">
-                    <div class="gallery-overlay">
-                        <h3>We Can't See The Sunset</h3>
-                        <p>Short Film - Writer, Co-director & Co-producer</p>
-                    </div>
-                </div>
-                <div class="gallery-item" onclick="openFilmModal('Melkbrood-2.jpeg', 'Melkbrood')">
-                    <img src="Melkbrood-2.jpeg" alt="Melkbrood">
-                    <div class="gallery-overlay">
-                        <h3>Melkbrood</h3>
-                        <p>Short Film - Production Designer</p>
-                    </div>
-                </div>
-                <div class="gallery-item" onclick="openFilmModal('AS_EK_KON_KIES.jpg', 'As ek kon kies')">
-                    <img src="AS_EK_KON_KIES.jpg" alt="As ek kon kies">
-                    <div class="gallery-overlay">
-                        <h3>As ek kon kies</h3>
-                        <p>Short Film - Production Designer</p>
-                    </div>
-                </div>
+                <button type="button" class="carousel-arrow carousel-arrow-right" onclick="scrollCarousel('shortFilmsCarousel', 1)" aria-label="Scroll short films right">&#10095;</button>
             </div>
         </div>
     </section>
@@ -1977,7 +2070,7 @@
                     trailer: 'https://www.youtube.com/watch?v=7KmEbKRsKEU',
                     additionalImages: ['We_Cant_See_The_Sunset.JPG', 'We_Cant_See_The_Sunset_Ad2.png', 'We_Cant_See_The_Sunset_Ad1.png']
                 },
-                'As ek kon kies': {
+                'AS EK KON KIES': {
                     year: '2026',
                     directors: 'Kanya Viljoen & Emilie Badenhorst',
                     synopsis: 'During a church service, Kyleigh celebrates her engagement to Jayden, publicly affirming the life she has chosen: faith, family and community. Watching from the back of the church is Lara, Kyleigh\'s former partner. What appears to be a joyful celebration is, for the two women, something much more complicated — the public confirmation that their relationship is being left behind. As ek kon kies explores the uncomfortable space between choice and social expectation, asking whether we are always truly free to choose the lives we want, and what happens when the consequences of those choices involve love, identity, family and belonging.',
@@ -2638,7 +2731,7 @@
                     const aspectRatio = this.naturalWidth / this.naturalHeight;
                     const galleryItem = img.closest('.gallery-item');
                     
-                    if (aspectRatio < 0.8) {
+                    if (aspectRatio <= 0.8) {
                         // Very tall portrait (like movie posters)
                         galleryItem.classList.add('portrait');
                     } else if (aspectRatio > 1.4) {
@@ -2648,12 +2741,82 @@
                         // Square-ish
                         galleryItem.classList.add('square');
                     }
-                    
+
                     console.log(`Image ${img.alt} aspect ratio: ${aspectRatio.toFixed(2)}, class: ${galleryItem.className}`);
                 };
                 tempImg.src = img.src;
             });
         });
+
+        // Infinite-feeling carousel for the Short Films row
+        (function() {
+            const carouselState = {};
+
+            function initCarousel(id) {
+                const track = document.getElementById(id);
+                if (!track) return;
+
+                const originalItems = Array.from(track.children);
+                const originalCount = originalItems.length;
+                if (originalCount === 0) return;
+
+                // Clone the set before and after so scrolling in either direction
+                // always has more of the same films ready to show ("infinite" loop).
+                originalItems.forEach(item => {
+                    track.appendChild(item.cloneNode(true));
+                });
+                originalItems.slice().reverse().forEach(item => {
+                    track.insertBefore(item.cloneNode(true), track.firstChild);
+                });
+
+                carouselState[id] = { originalCount, itemWidth: 0 };
+
+                function measure() {
+                    const first = track.children[0];
+                    const style = window.getComputedStyle(track);
+                    const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
+                    carouselState[id].itemWidth = first.getBoundingClientRect().width + gap;
+                    // Start centered on the real (non-cloned) middle set
+                    track.scrollLeft = carouselState[id].itemWidth * originalCount;
+                }
+
+                // Measure after layout/images settle
+                window.addEventListener('load', measure);
+                setTimeout(measure, 300);
+                window.addEventListener('resize', measure);
+
+                let settleTimer = null;
+                track.addEventListener('scroll', function() {
+                    clearTimeout(settleTimer);
+                    settleTimer = setTimeout(function() {
+                        const state = carouselState[id];
+                        if (!state.itemWidth) return;
+                        const setWidth = state.itemWidth * state.originalCount;
+                        // Silently rewrap once we've drifted into a cloned set,
+                        // landing back on the equivalent spot in the real set.
+                        if (track.scrollLeft >= setWidth * 2) {
+                            track.scrollLeft -= setWidth;
+                        } else if (track.scrollLeft < setWidth) {
+                            track.scrollLeft += setWidth;
+                        }
+                    }, 120);
+                });
+
+                carouselState[id].measure = measure;
+            }
+
+            window.scrollCarousel = function(id, direction) {
+                const track = document.getElementById(id);
+                const state = carouselState[id];
+                if (!track || !state) return;
+                if (!state.itemWidth) state.measure();
+                track.scrollBy({ left: direction * state.itemWidth, behavior: 'smooth' });
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                initCarousel('shortFilmsCarousel');
+            });
+        })();
     </script>
 </body>
 </html>
