@@ -9,10 +9,15 @@
     <link rel="shortcut icon" href="favicon.ico?v=2">
     <link rel="icon" href="favicon.jpg?v=2" type="image/jpeg">
     <link rel="apple-touch-icon" href="favicon.jpg?v=2">
-    
+
+    <!-- Speed up the external font/icon requests below -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -416,7 +421,7 @@
         
         /* Carissa gallery item */
         .gallery-item[onclick*="Carissa"] {
-            background-image: url('Carissa_poster_thumb.jpg') !important;
+            background-image: url('Carissa_poster_thumb.webp') !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
@@ -1536,7 +1541,7 @@
         <div class="film-category">
             <h3 class="category-title">Feature Films</h3>
             <div class="gallery">
-                <div class="gallery-item" onclick="openFilmModal('Carissa_poster.jpg', 'Carissa')" style="background-image: url('Carissa_poster_thumb.jpg')">
+                <div class="gallery-item" onclick="openFilmModal('Carissa_poster.jpg', 'Carissa')" style="background-image: url('Carissa_poster_thumb.webp')">
                     <div class="gallery-overlay">
                         <h3>Carissa</h3>
                         <p>Feature Film - Production Designer & Costume Designer</p>
@@ -1591,6 +1596,13 @@
                         <div class="gallery-overlay">
                             <h3>AS EK KON KIES</h3>
                             <p>Short Film - Production Designer</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item portrait" onclick="openFilmModal('N_Poppy_Op_Die_Heuwel.jpg', 'NPoppyOpDieHeuwel')">
+                        <img src="N_Poppy_Op_Die_Heuwel_thumb.jpg" alt="'n Poppy op die Heuwel" loading="lazy" decoding="async">
+                        <div class="gallery-overlay">
+                            <h3>'n Poppy op die Heuwel</h3>
+                            <p>Short Film - 1st Assistant Director</p>
                         </div>
                     </div>
                 </div>
@@ -2076,6 +2088,14 @@
                     synopsis: 'During a church service, Kyleigh celebrates her engagement to Jayden, publicly affirming the life she has chosen: faith, family and community. Watching from the back of the church is Lara, Kyleigh\'s former partner. What appears to be a joyful celebration is, for the two women, something much more complicated — the public confirmation that their relationship is being left behind. As ek kon kies explores the uncomfortable space between choice and social expectation, asking whether we are always truly free to choose the lives we want, and what happens when the consequences of those choices involve love, identity, family and belonging.',
                     roles: 'Production Designer',
                     type: 'Short Film'
+                },
+                'NPoppyOpDieHeuwel': {
+                    displayTitle: '\'n Poppy op die Heuwel',
+                    year: '2026',
+                    directors: 'Winford Collings',
+                    synopsis: 'After the death of their beloved grandmother Poppy, siblings Laila and Josh return to the Namaqualand farm where their family history is rooted. In the middle of the night, they undertake an intimate and difficult task: digging a grave for someone they love, so that she can be laid to rest beside her own mother. The film uses death not simply as an ending, but as a way of exploring family, ancestry, grief, land and belonging. Set against the stark landscape of Namaqualand, \'n Poppy op die heuwel becomes a story about what families do with the people, and histories, they refuse to leave behind.',
+                    roles: '1st Assistant Director',
+                    type: 'Short Film'
                 }
             };
             
@@ -2113,7 +2133,7 @@
                 
                 // Set description content
                 descriptionDiv.innerHTML = `
-                    <h3 style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #ffffff;">${title}</h3>
+                    <h3 style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #ffffff;">${displayTitle}</h3>
                     <p style="font-size: 14px; margin-bottom: 5px; color: #cccccc;"><strong>${details.type}</strong> (${details.year})</p>
                     <p style="font-size: 13px; margin-bottom: 5px; color: #cccccc;"><strong>Directors:</strong> ${details.directors}</p>
                     <p style="font-size: 13px; margin-bottom: 8px; line-height: 1.4; color: #ffffff;">${details.synopsis}</p>
