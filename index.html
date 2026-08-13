@@ -212,6 +212,7 @@
             animation: none;
             transform: scale(1);
             transition: opacity 0.5s ease-in-out;
+            filter: brightness(0.4);
         }
 
         .hero-background-overlay.slide-up {
@@ -1838,20 +1839,21 @@
             }, 1000);
         });
 
-        // Cycling background images
+        // Cycling background images (the very first slide, 'BTS 3 xtra.jpg', is intentionally
+        // left out here since it's already the permanent base layer behind these overlays —
+        // including it again would flash the exact same photo every time the rotation wraps)
         const heroBackgroundImages = [
-            'New_BTS_Slide/BTS 3 xtra.jpg',
             'New_BTS_Slide/BTS 4 xtra.jpeg',
             'New_BTS_Slide/BTS 5 xtra.jpeg',
             'New_BTS_Slide/OVIF BTS 2 .JPG',
             'New_BTS_Slide/OVIF BTS 4.JPG',
             'ovf.jpg',
-            'Carissa_BTSjpg.jpg', 
+            'Carissa_BTSjpg.jpg',
             'BTS.JPG'
         ];
         
         const slideAnimations = ['slide-up', 'slide-left', 'slide-right'];
-        let currentBgIndex = 0;
+        let currentBgIndex = -1;
         let currentAnimIndex = 0;
         
         function cycleBackground() {
