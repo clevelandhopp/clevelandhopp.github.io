@@ -466,7 +466,10 @@
             gap: 30px;
             margin-top: 0;
             overflow-x: auto;
-            scroll-behavior: smooth;
+            /* No scroll-behavior here on purpose. It also governs programmatic
+               scrolling, which made the carousel's internal repositioning
+               animate — the row visibly sliding backwards after a swipe. The
+               arrows request smooth scrolling explicitly in JS instead. */
             scroll-snap-type: none;
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -2212,11 +2215,16 @@
                 // starts playing as soon as the film is opened (see below).
                 let trailerHtml = '';
                 
+                // Say "Director" for one name and "Directors" for several,
+                // rather than labelling every film as though it had a team.
+                const directorLabel =
+                    /\s&\s|,|\sand\s/i.test(details.directors || '') ? 'Directors' : 'Director';
+
                 // Set description content
                 descriptionDiv.innerHTML = `
                     <h3 style="font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #f5efe3;">${displayTitle}</h3>
                     <p style="font-size: 14px; margin-bottom: 5px; color: #d9c7a8;"><strong>${details.type}</strong> (${details.year})</p>
-                    <p style="font-size: 13px; margin-bottom: 5px; color: #d9c7a8;"><strong>Directors:</strong> ${details.directors}</p>
+                    <p style="font-size: 13px; margin-bottom: 5px; color: #d9c7a8;"><strong>${directorLabel}:</strong> ${details.directors}</p>
                     <p style="font-size: 13px; margin-bottom: 8px; line-height: 1.4; color: #f5efe3;">${details.synopsis}</p>
                     <p style="font-size: 13px; margin-bottom: 5px; color: #d9c7a8;"><strong>Roles:</strong> ${details.roles}</p>
                     ${additionalImagesHtml}
@@ -2920,6 +2928,16 @@
                 const st = { count: count, itemWidth: 0, setWidth: 0, ready: false, index: 0 };
                 state[id] = st;
 
+                // Move the track with no animation. Repositioning is only
+                // invisible if it is instantaneous: animate it and the viewer
+                // watches the films slide back under their finger.
+                function setLeft(x) {
+                    const prev = track.style.scrollBehavior;
+                    track.style.scrollBehavior = 'auto';
+                    track.scrollLeft = x;
+                    track.style.scrollBehavior = prev;
+                }
+
                 st.measure = function () {
                     const first = track.children[0];
                     if (!first) return;
@@ -2933,7 +2951,7 @@
                         st.itemWidth = w;
                         st.setWidth = w * count;
                         st.index = 0;
-                        track.scrollLeft = st.setWidth * MIDDLE;
+                        setLeft(st.setWidth * MIDDLE);
                         st.ready = true;
                         return;
                     }
@@ -2950,7 +2968,7 @@
                     const offsetItems = (track.scrollLeft - st.setWidth * MIDDLE) / st.itemWidth;
                     st.itemWidth = w;
                     st.setWidth = w * count;
-                    track.scrollLeft = st.setWidth * MIDDLE + offsetItems * w;
+                    setLeft(st.setWidth * MIDDLE + offsetItems * w);
                 };
 
                 // Where the track should sit for the current index.
@@ -2961,19 +2979,22 @@
                 // Wrap the index back into the real set and move the track there
                 // instantly. Only ever called while nothing is animating, and the
                 // frame it lands on is an identical copy, so nothing is seen.
-                st.normalize = function () {
+                // Bring the track back onto the real set.
+                //
+                // This has to work in PIXELS, not in whole films. A free swipe
+                // can stop part-way between two films, and the earlier version
+                // rounded to the nearest film before repositioning — throwing
+                // away that fraction and lurching the row sideways by up to
+                // half a poster. Shifting by a whole number of set-widths
+                // instead keeps the fractional position intact, and since every
+                // set is an identical copy the result is pixel-for-pixel what
+                // was already on screen: nothing visible happens.
+                st.recenter = function () {
                     if (!st.ready || !st.setWidth) return;
-                    if (st.index >= 0 && st.index < st.count) return;
-                    st.index = ((st.index % st.count) + st.count) % st.count;
-                    track.scrollLeft = st.leftFor(st.index);
-                };
-
-                // After a swipe, work out which film we actually landed on and
-                // bring the index back in step with it.
-                st.syncFromScroll = function () {
-                    if (!st.ready || !st.itemWidth) return;
-                    st.index = Math.round((track.scrollLeft - st.setWidth * MIDDLE) / st.itemWidth);
-                    st.normalize();
+                    const base = st.setWidth * MIDDLE;
+                    const sets = Math.floor((track.scrollLeft - base) / st.setWidth);
+                    if (sets !== 0) setLeft(track.scrollLeft - sets * st.setWidth);
+                    st.index = Math.round((track.scrollLeft - base) / st.itemWidth);
                 };
 
                 st.measure();
@@ -2998,7 +3019,7 @@
                         // exists for swipe and trackpad, and must not re-derive
                         // the index from a position the buttons still own.
                         if (Date.now() - (st.lastButton || 0) < 800) return;
-                        st.syncFromScroll();
+                        st.recenter();
                     }, 160);
                 }, { passive: true });
             }
@@ -3010,10 +3031,10 @@
                 if (!st.ready || !st.itemWidth) st.measure();
                 if (!st.itemWidth) return;
 
-                // Step 1: if the last move carried us off the end of the real
-                // set, jump back onto the matching frame of it now, while the
-                // track is still. Identical artwork, so nothing flickers.
-                st.normalize();
+                // Step 1: if the last move carried us off the real set, shift
+                // back onto it now, while the track is still. This also brings
+                // the index in step with wherever a swipe may have left us.
+                st.recenter();
 
                 // Step 2: advance one film. The index may run one past either
                 // edge, which is still inside the cloned buffer, so the smooth
