@@ -18,8 +18,13 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome: loaded without blocking first paint -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+
+    <!-- Start fetching the hero photo immediately rather than waiting for the CSS -->
+    <link rel="preload" as="image" href="New_BTS_Slide/BTS 3 xtra.jpg" fetchpriority="high">
     
     <style>
         * {
@@ -462,7 +467,7 @@
             margin-top: 0;
             overflow-x: auto;
             scroll-behavior: smooth;
-            scroll-snap-type: x mandatory;
+            scroll-snap-type: none;
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
@@ -1832,12 +1837,25 @@
     </footer>
 
     <script>
-        // Loading screen
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loadingScreen').classList.add('hidden');
-            }, 1000);
-        });
+        // Loading screen — hide as soon as the document is usable. It used to
+        // wait for every image to finish AND then hold for a further second,
+        // which kept the spinner up for ~1.7s on a page that had already painted.
+        (function () {
+            var done = false;
+            function hideLoader() {
+                if (done) return;
+                done = true;
+                var el = document.getElementById('loadingScreen');
+                if (el) el.classList.add('hidden');
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', hideLoader);
+            } else {
+                hideLoader();
+            }
+            window.addEventListener('load', hideLoader);
+            setTimeout(hideLoader, 1500); // hard ceiling: never hangs on a slow asset
+        })();
 
         // Cycling background images (the very first slide, 'BTS 3 xtra.jpg', is intentionally
         // left out here since it's already the permanent base layer behind these overlays —
@@ -2792,75 +2810,138 @@
             });
         });
 
-        // Infinite-feeling carousel for the Short Films row
-        (function() {
-            const carouselState = {};
+        // Truly infinite carousel for the Feature Films and Short Films rows.
+        (function () {
+            const SETS_EACH_SIDE = 2;          // 2 clone sets before + 2 after + the real one
+            const MIDDLE = SETS_EACH_SIDE;     // index of the real set
+            const state = {};
 
             function initCarousel(id) {
                 const track = document.getElementById(id);
                 if (!track) return;
 
-                const originalItems = Array.from(track.children);
-                const originalCount = originalItems.length;
-                if (originalCount === 0) return;
+                const originals = Array.from(track.children);
+                const count = originals.length;
+                if (!count) return;
 
-                // Clone the set before and after so scrolling in either direction
-                // always has more of the same films ready to show ("infinite" loop).
-                originalItems.forEach(item => {
-                    track.appendChild(item.cloneNode(true));
-                });
-                originalItems.slice().reverse().forEach(item => {
-                    track.insertBefore(item.cloneNode(true), track.firstChild);
-                });
-
-                carouselState[id] = { originalCount, itemWidth: 0 };
-
-                function measure() {
-                    const first = track.children[0];
-                    const style = window.getComputedStyle(track);
-                    const gap = parseFloat(style.columnGap || style.gap || '0') || 0;
-                    carouselState[id].itemWidth = first.getBoundingClientRect().width + gap;
-                    // Start centered on the real (non-cloned) middle set
-                    track.scrollLeft = carouselState[id].itemWidth * originalCount;
+                // Build clone sets on both sides so there is always more film
+                // to scroll into, whichever way you go.
+                for (let c = 0; c < SETS_EACH_SIDE; c++) {
+                    originals.forEach(function (item) {
+                        track.appendChild(item.cloneNode(true));
+                    });
+                    originals.slice().reverse().forEach(function (item) {
+                        track.insertBefore(item.cloneNode(true), track.firstChild);
+                    });
                 }
 
-                // Measure after layout/images settle
-                window.addEventListener('load', measure);
-                setTimeout(measure, 300);
-                window.addEventListener('resize', measure);
+                const st = { count: count, itemWidth: 0, setWidth: 0, ready: false, index: 0 };
+                state[id] = st;
 
-                let settleTimer = null;
-                track.addEventListener('scroll', function() {
-                    clearTimeout(settleTimer);
-                    settleTimer = setTimeout(function() {
-                        const state = carouselState[id];
-                        if (!state.itemWidth) return;
-                        const setWidth = state.itemWidth * state.originalCount;
-                        // Silently rewrap once we've drifted into a cloned set,
-                        // landing back on the equivalent spot in the real set.
-                        if (track.scrollLeft >= setWidth * 2) {
-                            track.scrollLeft -= setWidth;
-                        } else if (track.scrollLeft < setWidth) {
-                            track.scrollLeft += setWidth;
-                        }
-                    }, 120);
+                st.measure = function (preserve) {
+                    const first = track.children[0];
+                    if (!first) return;
+                    const cs = window.getComputedStyle(track);
+                    const gap = parseFloat(cs.columnGap || cs.gap || '0') || 0;
+                    const w = first.getBoundingClientRect().width + gap;
+                    if (!w) return;
+
+                    // Keep the viewer where they were when only the size changed.
+                    const offsetInSet = (st.ready && st.setWidth)
+                        ? (track.scrollLeft % st.setWidth)
+                        : 0;
+
+                    st.itemWidth = w;
+                    st.setWidth = w * count;
+                    if (!preserve) st.index = 0;
+                    track.scrollLeft = st.setWidth * MIDDLE + (preserve ? offsetInSet : 0);
+                    st.ready = true;
+                };
+
+                // Where the track should sit for the current index.
+                st.leftFor = function (index) {
+                    return st.setWidth * MIDDLE + index * st.itemWidth;
+                };
+
+                // Wrap the index back into the real set and move the track there
+                // instantly. Only ever called while nothing is animating, and the
+                // frame it lands on is an identical copy, so nothing is seen.
+                st.normalize = function () {
+                    if (!st.ready || !st.setWidth) return;
+                    if (st.index >= 0 && st.index < st.count) return;
+                    st.index = ((st.index % st.count) + st.count) % st.count;
+                    track.scrollLeft = st.leftFor(st.index);
+                };
+
+                // After a swipe, work out which film we actually landed on and
+                // bring the index back in step with it.
+                st.syncFromScroll = function () {
+                    if (!st.ready || !st.itemWidth) return;
+                    st.index = Math.round((track.scrollLeft - st.setWidth * MIDDLE) / st.itemWidth);
+                    st.normalize();
+                };
+
+                st.measure(false);
+                if (document.readyState !== 'complete') {
+                    window.addEventListener('load', function () { st.measure(false); });
+                }
+                setTimeout(function () { st.measure(false); }, 400);
+
+                let resizeTimer = null;
+                window.addEventListener('resize', function () {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(function () { st.measure(true); }, 150);
                 });
 
-                carouselState[id].measure = measure;
+                // Swipe / trackpad: recenter once the gesture has come to rest.
+                let settle = null;
+                track.addEventListener('scroll', function () {
+                    if (st.animating) return;     // never touch a button animation
+                    clearTimeout(settle);
+                    settle = setTimeout(function () {
+                        // Leave a clear margin after a button press: this path
+                        // exists for swipe and trackpad, and must not re-derive
+                        // the index from a position the buttons still own.
+                        if (Date.now() - (st.lastButton || 0) < 800) return;
+                        st.syncFromScroll();
+                    }, 160);
+                }, { passive: true });
             }
 
-            window.scrollCarousel = function(id, direction) {
+            window.scrollCarousel = function (id, direction) {
                 const track = document.getElementById(id);
-                const state = carouselState[id];
-                if (!track || !state) return;
-                if (!state.itemWidth) state.measure();
-                track.scrollBy({ left: direction * state.itemWidth, behavior: 'smooth' });
+                const st = state[id];
+                if (!track || !st) return;
+                if (!st.ready || !st.itemWidth) st.measure(false);
+                if (!st.itemWidth) return;
+
+                // Step 1: if the last move carried us off the end of the real
+                // set, jump back onto the matching frame of it now, while the
+                // track is still. Identical artwork, so nothing flickers.
+                st.normalize();
+
+                // Step 2: advance one film. The index may run one past either
+                // edge, which is still inside the cloned buffer, so the smooth
+                // scroll always has somewhere to go and can never run out.
+                st.index += direction;
+                st.animating = true;
+                st.lastButton = Date.now();
+                clearTimeout(st.animTimer);
+                track.scrollTo({ left: st.leftFor(st.index), behavior: 'smooth' });
+                st.animTimer = setTimeout(function () {
+                    st.animating = false;
+                }, 450);
             };
 
-            document.addEventListener('DOMContentLoaded', function() {
+            function boot() {
                 initCarousel('shortFilmsCarousel');
                 initCarousel('featureFilmsCarousel');
-            });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', boot);
+            } else {
+                boot();
+            }
         })();
     </script>
 </body>
