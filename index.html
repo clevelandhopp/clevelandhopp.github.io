@@ -595,7 +595,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 80px;
-            align-items: start;
+            align-items: stretch;
             margin-top: 60px;
         }
 
@@ -639,12 +639,16 @@
             color: var(--text-light);
         }
 
+        /* No fixed aspect ratio: the frame takes the height of the text
+           beside it, so the bottom of the picture and the last line of the
+           bio line up at any screen width. A fixed 4:5 shape could only ever
+           match at one width, because the picture shrinks as the column
+           narrows while the text grows taller. */
         .about-image {
             position: relative;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            aspect-ratio: 4/5;
             min-height: 500px;
         }
 
@@ -652,6 +656,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center top;   /* a taller frame never crops his face */
         }
 
         /* Awards Section */
@@ -913,7 +918,7 @@
             color: #f5efe3;
             font-size: 18px;
             text-align: center;
-            width: 25%;
+            width: 55%;
             border-right: 1px solid rgba(245, 239, 227, 0.1);
         }
 
@@ -929,7 +934,7 @@
             font-weight: 600;
             font-size: 16px;
             color: #c9973f;
-            width: 25%;
+            width: 45%;
         }
 
         .offerings-table td i {
@@ -1014,51 +1019,12 @@
         }
 
         /* Reference Cards */
-        .reference-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
-        }
 
-        .reference-card {
-            background: rgba(245, 239, 227, 0.05);
-            border: 1px solid rgba(245, 239, 227, 0.1);
-            border-radius: 15px;
-            padding: 30px;
-            transition: all 0.3s ease;
-        }
 
-        .reference-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-            background: rgba(201, 151, 63, 0.1);
-        }
 
-        .reference-card h4 {
-            font-family: 'Inter', sans-serif;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--text-light);
-        }
 
-        .reference-card p {
-            color: #b7a891;
-            margin-bottom: 8px;
-            line-height: 1.6;
-        }
 
-        .reference-card a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
 
-        .reference-card a:hover {
-            color: #f5efe3;
-            text-decoration: underline;
-        }
         .contact-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1149,7 +1115,7 @@
             width: 100%;
             padding: 18px;
             background: var(--gradient-primary);
-            color: #f5efe3;
+            color: #15110d;
             border: none;
             border-radius: 50px;
             font-weight: 600;
@@ -1581,7 +1547,7 @@
                 <li><a href="#films" class="nav-link">Films</a></li>
                 <li><a href="#awards" class="nav-link">Awards & Recognition</a></li>
                 <li><a href="#services" class="nav-link">Offerings</a></li>
-                <li><a href="#references" class="nav-link">References</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -1611,18 +1577,14 @@
                 <img src="Cleveland_Hopp_Bio_Picture.jpg" alt="Cleveland Hopp" loading="lazy" decoding="async">
             </div>
             <div class="about-text fade-in">
-                <p>Cleveland Hopp is a filmmaker and activist from Malmesbury, South Africa. He holds an Honours degree in Film Theory & Practice from the University of Cape Town, graduating with distinction in documentary studies. Beyond academia, his deepest education has come from the streets, salons, corner stores, community halls, and the people who shape his life. He believes film is a tool for healing, justice, and for honouring those who came before.</p>
-                
-                <p>His work lives at the intersection of queer identity, African Indigenous storytelling, and rural community life. Through an intimate and grounded lens, he amplifies overlooked voices, including his own, and sits with truths that demand to be felt.</p>
-                
-                <p>His debut documentary, Onthou vi Fredo?, pays tribute to murdered drag queen Alfredo April, whose case remains unsolved. The film won Best Documentary and Best LGBTQ+ Representation at the FAME Inclusive Lens Awards and screened in the Africa Calls programme at Giornate degli Autori during the 82nd Venice Film Festival.</p>
-                
-                <p>As part of the SAFTA award winning Collective, Kraal, Cleveland contributed to Carissa by Jason Jacobs and Devon Delmar, nominated for the Venice Horizons Award, and Variations on a Theme, which won the Tiger Award at International Film Festival Rotterdam 2026.</p>
-                
-                <p>Cleveland believes film can hold space for grief, spark change, and leave something infinite.</p>
-                
-                <p>He creates work that matters, and for him, that is art.</p>
-                
+                <p>Cleveland Hopp is a filmmaker and activist from Malmesbury, South Africa, with an Honours degree in Film Theory &amp; Practice from the University of Cape Town and a distinction in documentary studies. He believes film is a tool for healing, justice, and for honouring those who came before.</p>
+
+                <p>His work lives at the intersection of queer identity, African Indigenous storytelling, and rural community life, amplifying overlooked voices, including his own.</p>
+
+                <p>His debut documentary, Onthou vi Fredo?, pays tribute to murdered drag queen Alfredo April. It won Best Documentary and Best LGBTQ+ Representation at the FAME Inclusive Lens Awards and screened at Giornate degli Autori during the 82nd Venice Film Festival.</p>
+
+                <p>As part of the SAFTA award winning collective Kraal, he contributed to Carissa, nominated for the Venice Horizons Award, and Variations on a Theme, winner of the Tiger Award at International Film Festival Rotterdam 2026.</p>
+
                 <h4 style="margin-top: 30px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 20px; color: #f5efe3;">EDUCATION & QUALIFICATIONS</h4>
                 <p style="margin-top: 15px;"><strong>Bachelor of Arts Honours in Film Practice and Theory</strong><br>with distinction in Documentary Studies<br>University of Cape Town | 2024</p>
                 <p style="margin-top: 15px;"><strong>Bachelor of Arts in Film and Television Studies</strong><br>specialising in Screen Production<br>University of Cape Town | 2022</p>
@@ -1800,30 +1762,25 @@
                 <thead>
                     <tr>
                         <th>Service</th>
-                        <th>Description</th>
                         <th>Experience</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="fade-in">
                         <td><i class="fas fa-film"></i> Production Design</td>
-                        <td>Creating immersive visual environments that bring stories to life through meticulous attention to detail and artistic vision.</td>
-                        <td><strong>More than 5 years experience</strong></td>
+                        <td><strong>More than 7 years experience</strong></td>
                     </tr>
                     <tr class="fade-in">
                         <td><i class="fas fa-video"></i> Directing</td>
-                        <td>Transforming scripts into compelling visual narratives with a distinctive directorial voice and creative storytelling approach.</td>
-                        <td><strong>More than 2 years experience</strong></td>
+                        <td><strong>More than 4 years experience</strong></td>
                     </tr>
                     <tr class="fade-in">
                         <td><i class="fas fa-camera"></i> Content Production</td>
-                        <td>Developing and producing high-quality content across various media platforms with professional expertise and creative innovation.</td>
-                        <td><strong>More than 5 years experience</strong></td>
+                        <td><strong>More than 7 years experience</strong></td>
                     </tr>
                     <tr class="fade-in">
                         <td><i class="fas fa-tasks"></i> Production Management</td>
-                        <td>Overseeing all aspects of production to ensure seamless execution from concept to completion with professional project management.</td>
-                        <td><strong>More than 3 years experience</strong></td>
+                        <td><strong>More than 5 years experience</strong></td>
                     </tr>
                 </tbody>
             </table>
@@ -1831,70 +1788,40 @@
     </section>
 
     <!-- References Section -->
-    <section class="section" id="references">
-        <h2 class="section-title">REFERENCES</h2>
-        <div class="offerings-table-container">
-            <table class="offerings-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Role & Project</th>
-                        <th>Contact</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Devon Delmar</td>
-                        <td>Director - CARISSA</td>
-                        <td><a href="mailto:devondelmar@gmail.com" style="color: #c9973f; text-decoration: underline;">devondelmar@gmail.com</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Jason Jacobs</td>
-                        <td>Director - Variations on a Theme</td>
-                        <td><a href="mailto:hello@jasonjacobs.art" style="color: #c9973f; text-decoration: underline;">hello@jasonjacobs.art</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Julia Cain</td>
-                        <td>Executive Producer - ONTHOU VI FREDO?</td>
-                        <td><a href="mailto:Julia.cain@uct.ac.za" style="color: #c9973f; text-decoration: underline;">Julia.cain@uct.ac.za</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Ruweida Valla</td>
-                        <td>Director - HECTIC NINE-9</td>
-                        <td><a href="mailto:rvalla@trace.tv" style="color: #c9973f; text-decoration: underline;">rvalla@trace.tv</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Sarah Byram</td>
-                        <td>Director - BETTERHALF</td>
-                        <td><a href="mailto:sarahbyram@gmail.com" style="color: #c9973f; text-decoration: underline;">sarahbyram@gmail.com</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Deidre Jantjies</td>
-                        <td>Producer/Director - MELKBROOD & VENUS</td>
-                        <td><a href="mailto:info@diegeesindiemasjien.co.za" style="color: #c9973f; text-decoration: underline;">info@diegeesindiemasjien.co.za</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Mamello Mosiana</td>
-                        <td>Producer - OPEN SECRETS</td>
-                        <td><a href="mailto:mmosiana@opensecrets.org.za" style="color: #c9973f; text-decoration: underline;">mmosiana@opensecrets.org.za</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Annemarie Du Plessis</td>
-                        <td>Producer - UPROOTED & VARIATIONS ON A THEME</td>
-                        <td><a href="mailto:Annemarie@meria.co.za" style="color: #c9973f; text-decoration: underline;">Annemarie@meria.co.za</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Dr Ian-Malcolm Rijsdijk</td>
-                        <td>Course Convenor - Film and Television Studies, UCT</td>
-                        <td><a href="mailto:ian.rijsdijk@uct.ac.za" style="color: #c9973f; text-decoration: underline;">ian.rijsdijk@uct.ac.za</a></td>
-                    </tr>
-                    <tr class="fade-in">
-                        <td><i class="fas fa-user"></i> Dr Zamambo Mkhize</td>
-                        <td>Course Convenor - African Feminist Studies, UCT</td>
-                        <td><a href="mailto:zamambo.mkhize@uct.ac.za" style="color: #c9973f; text-decoration: underline;">zamambo.mkhize@uct.ac.za</a></td>
-                    </tr>
-                </tbody>
-            </table>
+    <section class="section" id="contact">
+        <h2 class="section-title">GET IN CONTACT</h2>
+        <div class="contact-form fade-in" style="max-width: 720px; margin: 0 auto;">
+        <form id="contactForm" novalidate>
+            <!-- Web3Forms delivers the message. The key below identifies the
+             destination inbox; the address itself never appears on the page,
+             so it cannot be scraped from here. -->
+            <input type="hidden" name="access_key" value="6e869974-b44e-4b64-9dde-f7c927fc6178">
+            <input type="hidden" name="subject" value="New enquiry from clevelandhopp.work">
+            <input type="hidden" name="from_name" value="clevelandhopp.work">
+            <!-- Spam trap: real people never fill this in. -->
+            <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" style="display:none">
+
+            <div class="form-group">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" autocomplete="given-name" required>
+            </div>
+            <div class="form-group">
+            <label for="cf-surname">Surname</label>
+            <input type="text" id="cf-surname" name="surname" autocomplete="family-name" required>
+            </div>
+            <div class="form-group">
+            <label for="cf-email">Email address</label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" required>
+            </div>
+            <div class="form-group">
+            <label for="cf-message">Your message</label>
+            <textarea id="cf-message" name="message" rows="6" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="cf-submit">Send message</button>
+            <p id="cf-status" role="status" aria-live="polite"
+               style="margin-top: 16px; font-size: 14px; min-height: 20px;"></p>
+        </form>
         </div>
     </section>
 
@@ -3176,6 +3103,56 @@
                 boot();
             }
         })();
+    </script>
+
+    <script>
+    // ---- Contact form -------------------------------------------------
+    // Posted to Web3Forms, which forwards it to the inbox the access key
+    // belongs to. Sent with fetch so the visitor stays on the page.
+    (function () {
+        const form = document.getElementById('contactForm');
+        if (!form) return;
+        const status = document.getElementById('cf-status');
+        const button = document.getElementById('cf-submit');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!form.checkValidity()) { form.reportValidity(); return; }
+
+            const key = form.elements.access_key.value;
+            if (!key || key.indexOf('PASTE-YOUR') === 0) {
+                status.style.color = '#e0b568';
+                status.textContent = 'This form is not connected yet.';
+                return;
+            }
+
+            const label = button.textContent;
+            button.disabled = true;
+            button.textContent = 'Sending...';
+            status.textContent = '';
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify(Object.fromEntries(new FormData(form)))
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (!data.success) throw new Error(data.message || 'send failed');
+                    form.reset();
+                    status.style.color = '#8fd19e';
+                    status.textContent = 'Thank you — your message has been sent.';
+                })
+                .catch(function () {
+                    status.style.color = '#e39a9a';
+                    status.textContent = 'Sorry, that did not send. Please try again in a moment.';
+                })
+                .then(function () {
+                    button.disabled = false;
+                    button.textContent = label;
+                });
+        });
+    })();
     </script>
 </body>
 </html>
