@@ -2838,7 +2838,7 @@
                 const st = { count: count, itemWidth: 0, setWidth: 0, ready: false, index: 0 };
                 state[id] = st;
 
-                st.measure = function (preserve) {
+                st.measure = function () {
                     const first = track.children[0];
                     if (!first) return;
                     const cs = window.getComputedStyle(track);
@@ -2846,16 +2846,29 @@
                     const w = first.getBoundingClientRect().width + gap;
                     if (!w) return;
 
-                    // Keep the viewer where they were when only the size changed.
-                    const offsetInSet = (st.ready && st.setWidth)
-                        ? (track.scrollLeft % st.setWidth)
-                        : 0;
+                    // First good measurement: park on the real set.
+                    if (!st.ready) {
+                        st.itemWidth = w;
+                        st.setWidth = w * count;
+                        st.index = 0;
+                        track.scrollLeft = st.setWidth * MIDDLE;
+                        st.ready = true;
+                        return;
+                    }
 
+                    // Already running. Re-measuring must never move the row on
+                    // its own: this used to reset the scroll position whenever a
+                    // late image finished loading, which on a phone lands in the
+                    // middle of a swipe and yanks the films back to the start.
+                    // Only a genuine width change (rotation, window resize) is
+                    // allowed to reposition, and then it keeps the same film in
+                    // view rather than jumping to the beginning.
+                    if (Math.abs(w - st.itemWidth) < 0.5) return;
+
+                    const offsetItems = (track.scrollLeft - st.setWidth * MIDDLE) / st.itemWidth;
                     st.itemWidth = w;
                     st.setWidth = w * count;
-                    if (!preserve) st.index = 0;
-                    track.scrollLeft = st.setWidth * MIDDLE + (preserve ? offsetInSet : 0);
-                    st.ready = true;
+                    track.scrollLeft = st.setWidth * MIDDLE + offsetItems * w;
                 };
 
                 // Where the track should sit for the current index.
@@ -2881,16 +2894,16 @@
                     st.normalize();
                 };
 
-                st.measure(false);
+                st.measure();
                 if (document.readyState !== 'complete') {
-                    window.addEventListener('load', function () { st.measure(false); });
+                    window.addEventListener('load', function () { st.measure(); });
                 }
-                setTimeout(function () { st.measure(false); }, 400);
+                setTimeout(function () { st.measure(); }, 400);
 
                 let resizeTimer = null;
                 window.addEventListener('resize', function () {
                     clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(function () { st.measure(true); }, 150);
+                    resizeTimer = setTimeout(function () { st.measure(); }, 150);
                 });
 
                 // Swipe / trackpad: recenter once the gesture has come to rest.
@@ -2912,7 +2925,7 @@
                 const track = document.getElementById(id);
                 const st = state[id];
                 if (!track || !st) return;
-                if (!st.ready || !st.itemWidth) st.measure(false);
+                if (!st.ready || !st.itemWidth) st.measure();
                 if (!st.itemWidth) return;
 
                 // Step 1: if the last move carried us off the end of the real
